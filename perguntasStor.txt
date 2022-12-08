@@ -1,0 +1,2 @@
+- Backoffice e comunicação com exterior
+- backoffice/frontoffice terem ips diferentes ou seja estarem em redes diferentes, faz diferenca?
