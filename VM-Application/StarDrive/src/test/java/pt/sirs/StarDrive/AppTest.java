@@ -1,4 +1,4 @@
-package sirs;
+package pt.sirs.StarDrive;
 
 import static org.junit.Assert.assertTrue;
 
