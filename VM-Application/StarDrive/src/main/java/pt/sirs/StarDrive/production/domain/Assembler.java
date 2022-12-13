@@ -1,18 +1,22 @@
 package pt.sirs.StarDrive.production.domain;
 
-abstract class Assembler {
-    private int id;
-    private int productionRate;
 
-    public Assembler(int _id){
+abstract class Assembler {
+    private String id;
+    private int productionRate;
+    private AssemblyLine line;
+
+    public Assembler(String _id, AssemblyLine _line){
         setId(_id);
+        setLine(_line);
+        
     }
 
-    private void setId(int _id) {
+    private void setId(String _id) {
         this.id = _id;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
@@ -22,6 +26,18 @@ abstract class Assembler {
     
     public int getProductionRate() {
         return productionRate;
+    }
+
+    public void info(String message){
+        this.line.info(message);
+    }
+
+    public void setLine(AssemblyLine line) {
+        this.line = line;
+    }
+
+    public AssemblyLine getLine() {
+        return line;
     }
 
     abstract void assemble();
