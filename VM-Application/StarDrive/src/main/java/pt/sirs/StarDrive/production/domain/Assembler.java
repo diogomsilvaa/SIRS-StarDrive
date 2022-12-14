@@ -1,10 +1,14 @@
 package pt.sirs.StarDrive.production.domain;
 
+import java.time.Duration;
+import java.util.Random;
 
 abstract class Assembler {
     private String id;
-    private int productionRate;
+    private float productionRate;
     private AssemblyLine line;
+    private Duration timeRunning;
+    Random rand = new Random();
 
     public Assembler(String _id, AssemblyLine _line){
         setId(_id);
@@ -20,11 +24,11 @@ abstract class Assembler {
         return id;
     }
 
-    public void set_productionRate(int _productionRate) {
+    public void set_productionRate(float _productionRate) {
         this.productionRate = _productionRate;
     }
     
-    public int getProductionRate() {
+    public float getProductionRate() {
         return productionRate;
     }
 
@@ -40,5 +44,17 @@ abstract class Assembler {
         return line;
     }
 
-    abstract void assemble();
+    public Duration getTimeRunning() {
+        return timeRunning;
+    }
+
+    public void addTime(long millis){
+        timeRunning.plusMillis(millis);
+    }
+
+    public float getRandom(float min, float max) {
+        return min + (max-min) * rand.nextFloat();
+    }
+
+    abstract void assemble() throws InterruptedException;
 }

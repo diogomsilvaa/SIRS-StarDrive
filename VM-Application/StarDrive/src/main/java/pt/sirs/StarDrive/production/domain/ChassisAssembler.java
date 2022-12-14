@@ -8,7 +8,11 @@ public class ChassisAssembler extends Assembler{
     }
 
     @Override
-    void assemble() {
-        
+    void assemble() throws InterruptedException{
+        long startTime = System.currentTimeMillis();
+        info("Chassis placement started in line " + getLine().getSeqNum());
+        Thread.sleep(200);
+        info("Chassis placement finished in line " + getLine().getSeqNum());
+        addTime(System.currentTimeMillis() - startTime);
     }
 }

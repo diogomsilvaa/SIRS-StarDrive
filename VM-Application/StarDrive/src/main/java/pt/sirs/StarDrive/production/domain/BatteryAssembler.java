@@ -8,7 +8,11 @@ public class BatteryAssembler extends Assembler{
     }
 
     @Override
-    void assemble() {
-        
+    void assemble() throws InterruptedException{
+        long startTime = System.currentTimeMillis();
+        info("Battery insertion started in line " + getLine().getSeqNum());
+        Thread.sleep(200);
+        info("Battery insertion in line " + getLine().getSeqNum());
+        addTime(System.currentTimeMillis() - startTime);
     }
 }
