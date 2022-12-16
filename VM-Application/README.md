@@ -6,7 +6,7 @@
 
 ### JDK 19.0.1
 
-Run this two commands to install the JDK19
+Run this commands to install the JDK19
 
 ```
 curl -o https://download.oracle.com/java/19/latest/jdk-19_linux-x64_bin.deb
@@ -22,7 +22,7 @@ export PATH=$JAVA_HOME/bin:$PATH
 
 ### Maven 3.8.6
 
-Run this two commands to install Maven
+Run this commands to install Maven
 
 ```
 wget https://dlcdn.apache.org/maven/maven-3/3.8.6/binaries/apache-maven-3.8.6-bin.tar.gz
@@ -38,3 +38,17 @@ export "$M2_HOME/bin:$PATH"
 ```
 
 ### MongoDB
+
+Run this commands to install and initialize mongodb
+
+```
+sudo apt install mongodb
+sudo service mongodb start
+```
+
+Enter mongo shell and init a database in port 27017
+
+```
+mongo
+> use StartDriveDB
+```

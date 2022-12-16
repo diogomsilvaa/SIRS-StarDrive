@@ -1,5 +1,6 @@
 package pt.sirs.StarDrive.production.domain;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class AssemblyLine {
@@ -9,15 +10,14 @@ public class AssemblyLine {
     private Date endDate;
     private int seqNum;
     private Production prod;
+    private ArrayList<Assembler> assemblers;
+    
 
     public AssemblyLine(Production _prod){
+        assemblers = new ArrayList<Assembler>();
         setProd(_prod);
         // ir buscar o sec num à base dados
         // guardar esta info na base de dados
-    }
-
-    public int startAssembling(){
-        return seqNum;
     }
 
     public float getProductionRate() {
@@ -63,5 +63,39 @@ public class AssemblyLine {
         this.prod.info(message);
     }
 
+    public void addAssembler(Assembler assembler){
+        assemblers.add(assembler);
+    }
 
+    public ArrayList<Assembler> getAssemblers() {
+        return assemblers;
+    }
+
+    public int startAssembling(){
+        ArrayList<Assembler> assemblers = getAssemblers();
+        for(Assembler assembler : assemblers){
+            try {
+                assembler.assemble();
+            } catch (Exception e) {
+                info("exception yheaa");
+            }
+        }
+        return seqNum;
+    }
+
+    @Override
+    public String toString() {
+
+        String text = "Status: " + (onProduction?"Producing":"Stopped") + "\n";
+        text += "Assemblers: \n";
+        ArrayList<Assembler> assemblers = getAssemblers();
+        for(Assembler assembler : assemblers){
+            text += " -> " + assembler.toString(); 
+        }
+        
+
+        
+
+        return text;
+    }
 }
