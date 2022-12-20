@@ -1,7 +1,7 @@
 package pt.sirs.StarDrive.production.domain;
 
 public class Painter extends Assembler{
-    float paintLevels[];
+    float paintLevels[] = {0, 0, 0};
     boolean paintLevelsAlert = false;
 
     public Painter(String _id, AssemblyLine _line){

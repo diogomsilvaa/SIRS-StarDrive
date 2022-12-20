@@ -5,12 +5,13 @@ import java.util.UUID;
 import java.util.logging.*;
 
 public class Production {
-    ArrayList<Assembler> assemblers;
-    ArrayList<AssemblyLine> lines;
-    Logger logger;
+    private ArrayList<Assembler> assemblers;
+    private ArrayList<AssemblyLine> lines;
+    private Logger logger;
 
     public Production(){
         assemblers = new ArrayList<Assembler>();
+        lines = new ArrayList<AssemblyLine>();
         logger = Logger.getLogger(Assembler.class.getName());
         logger.setLevel(Level.INFO);
     }
@@ -24,9 +25,6 @@ public class Production {
     public void addAssembler(String assemblerType, AssemblyLine line){
         Assembler newAssembler;
         switch (assemblerType) {
-            case "painter":
-                newAssembler = new Painter(UUID.randomUUID().toString(), line);
-                break;
             case "eletronic":
                 newAssembler = new EletronicsAssembler(UUID.randomUUID().toString(), line);
                 break;
@@ -36,10 +34,13 @@ public class Production {
             case "chasis":
                 newAssembler = new ChassisAssembler(UUID.randomUUID().toString(), line);
                 break;
-        
+            case "painter":
+                newAssembler = new Painter(UUID.randomUUID().toString(), line);
+                break;
             default:
                 return;
         }
+        line.addAssembler(newAssembler);
         assemblers.add(newAssembler);
     }
 
