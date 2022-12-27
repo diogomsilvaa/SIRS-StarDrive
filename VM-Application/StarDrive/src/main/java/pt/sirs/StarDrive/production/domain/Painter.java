@@ -3,11 +3,14 @@ package pt.sirs.StarDrive.production.domain;
 public class Painter extends Assembler{
     float paintLevels[] = {0, 0, 0};
     boolean paintLevelsAlert = false;
+    int assembleSteps;
+
 
     public Painter(String _id, AssemblyLine _line){
         super(_id, _line);
-        info("Painter created and added to assembly line " + getLine().getSeqNum());
+        assembleSteps = (int) (3000 * STEP_MULTIPLIER);
         setPaintLevels(100, 100, 100);
+        info("Painter created and added to assembly line " + getLine().getSeqNum());
     }
 
     public void setPaintLevels(float red, float green, float blue) {
@@ -35,16 +38,18 @@ public class Painter extends Assembler{
     }
 
     @Override
-    void assemble() throws InterruptedException{
+    void assemble(){
         float startLevels[] = getPaintLevels();
         long startTime = System.currentTimeMillis();
         info("Paint job started in line " + getLine().getSeqNum());
-        Thread.sleep(Math.round(getRandom(300, 400)));
-        setPaintLevels(startLevels[0] - getRandom(0, 3), startLevels[1] - getRandom(0, 3), startLevels[2] - getRandom(0, 3));
+        for(int step = 0; step < assembleSteps; step++){
+            float paintCost = 3/assembleSteps;
+            setPaintLevels(startLevels[0] - getRandom(0, paintCost), startLevels[1] - getRandom(0, paintCost), startLevels[2] - getRandom(0, paintCost));
+            if(!checkPaintLevels()){
+                info("PAINT REPLACEMENT ALERT: replace paints in line " + getLine().getSeqNum());
+            } 
+        }
         addTime(System.currentTimeMillis() - startTime);
-        if(!checkPaintLevels()){
-            info("Warning: replace paints in line " + getLine().getSeqNum());
-        } 
         info("Paint job finished in line " + getLine().getSeqNum());
     }
 }

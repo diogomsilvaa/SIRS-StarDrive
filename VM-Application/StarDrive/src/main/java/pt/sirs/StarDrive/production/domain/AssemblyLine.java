@@ -74,11 +74,7 @@ public class AssemblyLine {
     public int startAssembling(){
         ArrayList<Assembler> assemblers = getAssemblers();
         for(Assembler assembler : assemblers){
-            try {
-                assembler.assemble();
-            } catch (Exception e) {
-                info("exception yheaa");
-            }
+            assembler.assemble();
         }
         return seqNum;
     }

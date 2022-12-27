@@ -3,16 +3,18 @@ package pt.sirs.StarDrive.production.domain;
 public class ChassisAssembler extends Assembler{
 
     boolean stabilityAlert = false;
+    int assembleSteps;
 
     public ChassisAssembler(String _id, AssemblyLine _line){
         super(_id, _line);
+        assembleSteps = (int) (12000 * STEP_MULTIPLIER);
         info("Chasis Assembler created and added to assembly line " + getLine().getSeqNum());
 
     }
 
     public boolean testStability() {
         float stability = getRandom(80, 100);
-        if(stability < 82){
+        if(stability < 99.8){
             setStabilityAlert(true);
             info("Stability problem in line " + getLine().getSeqNum());
             return false;
@@ -25,15 +27,16 @@ public class ChassisAssembler extends Assembler{
     }
 
     @Override
-    void assemble() throws InterruptedException{
+    void assemble(){
         long startTime = System.currentTimeMillis();
         info("Chassis placement started in line " + getLine().getSeqNum());
-        Thread.sleep(Math.round(getRandom(500, 600)));
+        for(int step = 0; step < assembleSteps; step++){
+            if(step % assembleSteps != 0) continue;
+            if(!testStability()){
+                info("Chassis placement not finished in line " + getLine().getSeqNum() + "due to stability problems.");
+            } 
+        }
         addTime(System.currentTimeMillis() - startTime);
-        if(!testStability()){
-            info("Chassis placement not finished in line " + getLine().getSeqNum() + "due to stability problems.");
-            return;
-        } 
         info("Chassis placement finished in line " + getLine().getSeqNum());
     }
 }

@@ -4,9 +4,11 @@ public class BatteryAssembler extends Assembler{
 
     float batteryTemp;
     boolean tempAlert;
+    int assembleSteps;
 
     public BatteryAssembler(String _id, AssemblyLine _line){
         super(_id, _line);
+        assembleSteps = (int) (10000 * STEP_MULTIPLIER);
         info("Batteries Assembler created and added to assembly line " + getLine().getSeqNum());
 
     }
@@ -24,22 +26,23 @@ public class BatteryAssembler extends Assembler{
     }
 
     public boolean checkBateries(){
-        if(getBatteryTemp() > 95){
+        if(getBatteryTemp() > 99.99){
             setTempAlert(true);
             return false;
         }
         return true;
     }
     @Override
-    void assemble() throws InterruptedException{
+    void assemble() {
         long startTime = System.currentTimeMillis();
         info("Battery insertion started in line " + getLine().getSeqNum());
-        Thread.sleep(Math.round(getRandom(200, 300)));
-        setBatteryTemp(getRandom(50, 100));
+        for(int step = 0; step < assembleSteps; step++){
+            setBatteryTemp(getRandom(50 + (40*step)/(assembleSteps), 50 + (50*step)/(assembleSteps)));
+            if(!checkBateries()){
+                info("HIGH TEMPERATURE ALERT: battery insertion in line " + getLine().getSeqNum());
+            } 
+        }
         addTime(System.currentTimeMillis() - startTime);
-        if(!checkBateries()){
-            info("Battery insertion not finished in line " + getLine().getSeqNum() + "due to high temperatures level.");
-        } 
         info("Battery insertion finished in line " + getLine().getSeqNum());
     }
 }

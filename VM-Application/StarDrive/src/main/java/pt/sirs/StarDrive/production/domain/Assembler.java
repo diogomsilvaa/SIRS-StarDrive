@@ -8,12 +8,13 @@ abstract class Assembler {
     private float productionRate;
     private AssemblyLine line;
     private Duration timeRunning;
+    static final double STEP_MULTIPLIER = 100000;
     Random rand = new Random();
 
     public Assembler(String _id, AssemblyLine _line){
         setId(_id);
         setLine(_line);
-        
+        timeRunning = Duration.ZERO;
     }
 
     private void setId(String _id) {
@@ -56,5 +57,5 @@ abstract class Assembler {
         return min + (max-min) * rand.nextFloat();
     }
 
-    abstract void assemble() throws InterruptedException;
+    abstract void assemble();
 }
