@@ -9,8 +9,8 @@ public class ShiftManagerService {
 
     }
 
-    public Shift createShift(LocalDateTime startTime, LocalDateTime endTime){
-        Shift shift = new Shift(startTime, endTime);
+    public Shift createShift(String id, LocalDateTime startTime, LocalDateTime endTime){
+        Shift shift = new Shift(id, startTime, endTime);
         return shift;
     }
 }

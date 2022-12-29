@@ -7,11 +7,13 @@ import pt.sirs.StarDrive.users.domain.Employee;
 
 public class Shift {
     
+    private String id;
     private ArrayList<Employee> employees;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
 
-    public Shift(LocalDateTime _startTime, LocalDateTime _endTime){
+    public Shift(String id, LocalDateTime _startTime, LocalDateTime _endTime){
+        setId(id);
         setStartTime(_startTime);
         setEndTime(_endTime);
     }
@@ -30,6 +32,14 @@ public class Shift {
 
     public LocalDateTime getEndTime() {
         return endTime;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public void addEmployee(Employee employee){
