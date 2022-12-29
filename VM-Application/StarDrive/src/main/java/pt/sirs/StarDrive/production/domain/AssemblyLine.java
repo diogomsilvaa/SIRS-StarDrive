@@ -3,19 +3,19 @@ package pt.sirs.StarDrive.production.domain;
 import java.util.ArrayList;
 import java.util.Date;
 
+import pt.sirs.StarDrive.production.ProductionService;
+
 public class AssemblyLine {
     private float productionRate;
     private boolean onProduction;
     private Date startDate;
     private Date endDate;
     private int seqNum;
-    private Production prod;
     private ArrayList<Assembler> assemblers;
     
 
-    public AssemblyLine(Production _prod){
+    public AssemblyLine(ProductionService _prod){
         assemblers = new ArrayList<Assembler>();
-        setProd(_prod);
         // ir buscar o sec num à base dados
         // guardar esta info na base de dados
     }
@@ -51,18 +51,6 @@ public class AssemblyLine {
         this.onProduction = status;
     }
 
-    public void setProd(Production prod) {
-        this.prod = prod;
-    }
-
-    public Production getProd() {
-        return prod;
-    }
-
-    public void info(String message){
-        this.prod.info(message);
-    }
-
     public void addAssembler(Assembler assembler){
         assemblers.add(assembler);
     }
@@ -88,9 +76,6 @@ public class AssemblyLine {
         for(Assembler assembler : assemblers){
             text += " -> " + assembler.toString(); 
         }
-        
-
-        
 
         return text;
     }

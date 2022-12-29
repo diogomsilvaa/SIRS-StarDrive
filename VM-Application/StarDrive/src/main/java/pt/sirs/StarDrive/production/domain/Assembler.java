@@ -1,19 +1,23 @@
 package pt.sirs.StarDrive.production.domain;
 
+import java.util.logging.*;
 import java.time.Duration;
 import java.util.Random;
 
-abstract class Assembler {
+public abstract class Assembler {
     private String id;
     private float productionRate;
     private AssemblyLine line;
     private Duration timeRunning;
     static final double STEP_MULTIPLIER = 100000;
+    private Logger logger;
     Random rand = new Random();
 
     public Assembler(String _id, AssemblyLine _line){
         setId(_id);
         setLine(_line);
+        logger = Logger.getLogger(Assembler.class.getName());
+        logger.setLevel(Level.INFO);
         timeRunning = Duration.ZERO;
     }
 
@@ -34,7 +38,7 @@ abstract class Assembler {
     }
 
     public void info(String message){
-        this.line.info(message);
+        this.logger.log(Level.INFO, message);
     }
 
     public void setLine(AssemblyLine line) {

@@ -1,19 +1,16 @@
-package pt.sirs.StarDrive.production.domain;
+package pt.sirs.StarDrive.production;
 
 import java.util.ArrayList;
 import java.util.UUID;
-import java.util.logging.*;
+import pt.sirs.StarDrive.production.domain.*;
 
-public class Production {
+public class ProductionService {
     private ArrayList<Assembler> assemblers;
     private ArrayList<AssemblyLine> lines;
-    private Logger logger;
 
-    public Production(){
+    public ProductionService(){
         assemblers = new ArrayList<Assembler>();
         lines = new ArrayList<AssemblyLine>();
-        logger = Logger.getLogger(Assembler.class.getName());
-        logger.setLevel(Level.INFO);
     }
 
     public AssemblyLine createAssemblyLine(){
@@ -43,9 +40,4 @@ public class Production {
         line.addAssembler(newAssembler);
         assemblers.add(newAssembler);
     }
-
-    public void info(String message){
-        this.logger.log(Level.INFO, message);
-    }
-
 }

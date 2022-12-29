@@ -1,7 +1,7 @@
 package pt.sirs.StarDrive;
 
 import pt.sirs.StarDrive.production.domain.AssemblyLine;
-import pt.sirs.StarDrive.production.domain.Production;
+import pt.sirs.StarDrive.production.ProductionService;
 
 /**
  * Hello world!
@@ -12,7 +12,7 @@ public class App
     public static void main( String[] args )
     {
         System.out.println( "Hello World!" );
-        Production prod = new Production();
+        ProductionService prod = new ProductionService();
         AssemblyLine line = prod.createAssemblyLine();
         prod.addAssembler("eletronic", line);
         prod.addAssembler("batteries", line);
