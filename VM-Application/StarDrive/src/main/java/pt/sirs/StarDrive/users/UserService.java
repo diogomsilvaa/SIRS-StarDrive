@@ -1,13 +1,20 @@
 package pt.sirs.StarDrive.users;
 
+import org.bson.Document;
+
+import com.mongodb.client.MongoCollection;
+
+import pt.sirs.StarDrive.Database;
 import pt.sirs.StarDrive.users.domain.Employee;
 import pt.sirs.StarDrive.users.domain.Engineer;
 import pt.sirs.StarDrive.users.domain.User;
 
 public class UserService {
     
+    private MongoCollection<Document> repository;
+
     public UserService(){
-        
+        repository = Database.usersCollection;
     }
 
     public User createUser(String id, String name, User.Role role){
@@ -23,6 +30,7 @@ public class UserService {
                 throw new IllegalArgumentException("Invalid role");
         }
         // save user to database
+        repository.insertOne(user.toDocument());
         return user;
     }
 

@@ -3,6 +3,10 @@ package pt.sirs.StarDrive.users.domain;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
+import org.bson.Document;
+
+import com.mongodb.DBObject;
+
 public class User {
     
     public enum Role {EMPLOYEE, ENGINEER}
@@ -55,5 +59,9 @@ public class User {
 
     public Role getRole() {
         return role;
+    }
+
+    public Document toDocument(){
+        return new Document("id", getId()).append("name", getName()).append("creationDate", getCreationDate()).append("role", getRole());
     }
 }

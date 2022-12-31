@@ -3,6 +3,8 @@ package pt.sirs.StarDrive.shiftManager.domain;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+import org.bson.Document;
+
 import pt.sirs.StarDrive.users.domain.Employee;
 
 public class Shift {
@@ -50,5 +52,15 @@ public class Shift {
     public void removeEmployee(Employee employee){
         employees.remove(employee);
         employee.removeShift(this);
+    }
+
+    public ArrayList<String> getEmployeesIDs() {
+        ArrayList<String> employeesIDs = new ArrayList<>();
+        employees.forEach(e -> employeesIDs.add(e.getId()));;
+        return employeesIDs;
+    }
+
+    public Document toDocument(){
+        return new Document("id", getId()).append("startTime", getStartTime()).append("endTime", getEndTime()).append("employees", getEmployeesIDs());
     }
 }

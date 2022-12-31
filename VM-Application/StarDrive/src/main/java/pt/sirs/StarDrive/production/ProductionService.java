@@ -2,15 +2,23 @@ package pt.sirs.StarDrive.production;
 
 import java.util.ArrayList;
 import java.util.UUID;
+import org.bson.Document;
+import com.mongodb.client.MongoCollection;
+
+import pt.sirs.StarDrive.Database;
 import pt.sirs.StarDrive.production.domain.*;
 
 public class ProductionService {
+
     private ArrayList<Assembler> assemblers;
     private ArrayList<AssemblyLine> lines;
+    private MongoCollection<Document> repository;
 
+    
     public ProductionService(){
         assemblers = new ArrayList<Assembler>();
         lines = new ArrayList<AssemblyLine>();
+        repository = Database.productionCollection;
     }
 
     public AssemblyLine createAssemblyLine(){
