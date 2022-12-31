@@ -12,18 +12,21 @@ public class ProductionService {
 
     private ArrayList<Assembler> assemblers;
     private ArrayList<AssemblyLine> lines;
-    private MongoCollection<Document> repository;
+    private MongoCollection<Document> linesRepository;
+    private MongoCollection<Document> assemblersRepository;
 
     
     public ProductionService(){
         assemblers = new ArrayList<Assembler>();
         lines = new ArrayList<AssemblyLine>();
-        repository = Database.productionCollection;
+        linesRepository = Database.assemblyLinesCollection;
+        assemblersRepository = Database.assemblersCollection;
     }
 
     public AssemblyLine createAssemblyLine(){
         AssemblyLine line = new AssemblyLine(this);
         lines.add(line);
+        linesRepository.insertOne(line.toDocument());
         return line;
     }
 
@@ -46,6 +49,7 @@ public class ProductionService {
                 return;
         }
         line.addAssembler(newAssembler);
+        assemblersRepository.insertOne(newAssembler.toDocument());
         assemblers.add(newAssembler);
     }
 }

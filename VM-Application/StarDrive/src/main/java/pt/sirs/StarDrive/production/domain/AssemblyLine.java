@@ -3,6 +3,8 @@ package pt.sirs.StarDrive.production.domain;
 import java.util.ArrayList;
 import java.util.Date;
 
+import org.bson.Document;
+
 import pt.sirs.StarDrive.production.ProductionService;
 
 public class AssemblyLine {
@@ -59,12 +61,22 @@ public class AssemblyLine {
         return assemblers;
     }
 
+    public ArrayList<String> getAssemblersIDs() {
+        ArrayList<String> assemblersIDs = new ArrayList<>();
+        assemblers.forEach(e -> assemblersIDs.add(e.getId()));;
+        return assemblersIDs;
+    }
+
     public int startAssembling(){
         ArrayList<Assembler> assemblers = getAssemblers();
         for(Assembler assembler : assemblers){
             assembler.assemble();
         }
         return seqNum;
+    }
+
+    public Document toDocument(){
+        return new Document("seqNum", getSeqNum()).append("startDate", getStartDate()).append("endDate", getEndDate()).append("assemblersIDs", getAssemblersIDs());
     }
 
     @Override

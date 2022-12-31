@@ -5,7 +5,6 @@ import java.time.ZoneOffset;
 
 import org.bson.Document;
 
-import com.mongodb.DBObject;
 
 public class User {
     

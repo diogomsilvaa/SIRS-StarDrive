@@ -1,6 +1,9 @@
 package pt.sirs.StarDrive.production.domain;
 
 import java.util.logging.*;
+
+import org.bson.Document;
+
 import java.time.Duration;
 import java.util.Random;
 
@@ -59,6 +62,10 @@ public abstract class Assembler {
 
     public float getRandom(float min, float max) {
         return min + (max-min) * rand.nextFloat();
+    }
+
+    public Document toDocument(){
+        return new Document("id", getId()).append("line", getLine()).append("timeRunninge", getTimeRunning()).append("productionRate", getProductionRate());
     }
 
     abstract void assemble();
