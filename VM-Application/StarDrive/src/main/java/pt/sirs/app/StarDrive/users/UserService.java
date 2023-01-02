@@ -1,13 +1,13 @@
-package pt.sirs.StarDrive.users;
+package pt.sirs.app.StarDrive.users;
 
 import org.bson.Document;
 
 import com.mongodb.client.MongoCollection;
 
-import pt.sirs.StarDrive.Database;
-import pt.sirs.StarDrive.users.domain.Employee;
-import pt.sirs.StarDrive.users.domain.Engineer;
-import pt.sirs.StarDrive.users.domain.User;
+import pt.sirs.app.StarDrive.Database;
+import pt.sirs.app.StarDrive.users.domain.Employee;
+import pt.sirs.app.StarDrive.users.domain.Engineer;
+import pt.sirs.app.StarDrive.users.domain.User;
 
 public class UserService {
     

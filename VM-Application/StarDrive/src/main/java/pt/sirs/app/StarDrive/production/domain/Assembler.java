@@ -1,12 +1,14 @@
-package pt.sirs.StarDrive.production.domain;
+package pt.sirs.app.StarDrive.production.domain;
 
 import java.util.logging.*;
 
-import org.bson.Document;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.Duration;
 import java.util.Random;
 
+@Document(collection = "assemblers")
 public abstract class Assembler {
     private String id;
     private float productionRate;
@@ -16,20 +18,22 @@ public abstract class Assembler {
     private Logger logger;
     Random rand = new Random();
 
-    public Assembler(String _id, AssemblyLine _line){
-        setId(_id);
+    public Assembler(int id, AssemblyLine _line){
+        setId("A" + id);
         setLine(_line);
         logger = Logger.getLogger(Assembler.class.getName());
         logger.setLevel(Level.INFO);
         timeRunning = Duration.ZERO;
+        productionRate = 0;
     }
 
-    private void setId(String _id) {
-        this.id = _id;
-    }
-
+    @Id
     public String getId() {
         return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public void set_productionRate(float _productionRate) {
@@ -62,10 +66,6 @@ public abstract class Assembler {
 
     public float getRandom(float min, float max) {
         return min + (max-min) * rand.nextFloat();
-    }
-
-    public Document toDocument(){
-        return new Document("id", getId()).append("line", getLine()).append("timeRunninge", getTimeRunning()).append("productionRate", getProductionRate());
     }
 
     abstract void assemble();

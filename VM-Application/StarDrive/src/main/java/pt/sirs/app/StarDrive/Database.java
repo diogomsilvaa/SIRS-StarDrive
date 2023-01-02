@@ -1,4 +1,4 @@
-package pt.sirs.StarDrive;
+package pt.sirs.app.StarDrive;
 
 import org.bson.Document;
 
@@ -16,7 +16,7 @@ public class Database {
     public static MongoCollection<Document> assemblyLinesCollection;
     public static MongoCollection<Document> assemblersCollection;
 
-    static {
+    public static void init(){
         mongoClient = MongoClients.create("mongodb://localhost:27017");
         database = mongoClient.getDatabase("StarDriveDB");  
         usersCollection = database.getCollection("users");

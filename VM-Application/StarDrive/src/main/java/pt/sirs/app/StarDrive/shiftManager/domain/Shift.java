@@ -1,11 +1,11 @@
-package pt.sirs.StarDrive.shiftManager.domain;
+package pt.sirs.app.StarDrive.shiftManager.domain;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import org.bson.Document;
 
-import pt.sirs.StarDrive.users.domain.Employee;
+import pt.sirs.app.StarDrive.users.domain.Employee;
 
 public class Shift {
     

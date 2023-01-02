@@ -1,4 +1,4 @@
-package pt.sirs.StarDrive.users.domain;
+package pt.sirs.app.StarDrive.users.domain;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;

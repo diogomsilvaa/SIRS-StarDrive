@@ -1,4 +1,4 @@
-package pt.sirs.StarDrive.users.domain;
+package pt.sirs.app.StarDrive.users.domain;
 
 public class Engineer extends Employee{
 

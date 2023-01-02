@@ -1,4 +1,4 @@
-package pt.sirs.StarDrive.production.domain;
+package pt.sirs.app.StarDrive.production.domain;
 
 public class Painter extends Assembler{
     float paintLevels[] = {0, 0, 0};
@@ -6,7 +6,7 @@ public class Painter extends Assembler{
     int assembleSteps;
 
 
-    public Painter(String _id, AssemblyLine _line){
+    public Painter(int _id, AssemblyLine _line){
         super(_id, _line);
         assembleSteps = (int) (3000 * STEP_MULTIPLIER);
         setPaintLevels(100, 100, 100);

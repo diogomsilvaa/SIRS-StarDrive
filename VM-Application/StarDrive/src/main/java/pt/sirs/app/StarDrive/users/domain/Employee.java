@@ -1,8 +1,8 @@
-package pt.sirs.StarDrive.users.domain;
+package pt.sirs.app.StarDrive.users.domain;
 
 import java.util.ArrayList;
 
-import pt.sirs.StarDrive.shiftManager.domain.Shift;
+import pt.sirs.app.StarDrive.shiftManager.domain.Shift;
 
 
 public class Employee extends User{

@@ -1,27 +1,38 @@
-package pt.sirs.StarDrive.production.domain;
+package pt.sirs.app.StarDrive.production.domain;
 
 import java.util.ArrayList;
 import java.util.Date;
 
-import org.bson.Document;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import pt.sirs.StarDrive.production.ProductionService;
+import pt.sirs.app.StarDrive.production.ProductionService;
 
+@Document(collection = "lines")
 public class AssemblyLine {
     private float productionRate;
     private boolean onProduction;
     private Date startDate;
     private Date endDate;
-    private int seqNum;
+    private static int seqNum = 0;
+    private String id;
     private ArrayList<Assembler> assemblers;
     
 
     public AssemblyLine(ProductionService _prod){
         assemblers = new ArrayList<Assembler>();
+        setId("L" + seqNum);
+        seqNum++;
         // ir buscar o sec num à base dados
         // guardar esta info na base de dados
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
     public float getProductionRate() {
         return productionRate;
     }
@@ -42,9 +53,6 @@ public class AssemblyLine {
     }
     public int getSeqNum() {
         return seqNum;
-    }
-    public void setSeqNum(int seqNum) {
-        this.seqNum = seqNum;
     }
     public boolean onProduction(){
         return this.onProduction;
@@ -73,10 +81,6 @@ public class AssemblyLine {
             assembler.assemble();
         }
         return seqNum;
-    }
-
-    public Document toDocument(){
-        return new Document("seqNum", getSeqNum()).append("startDate", getStartDate()).append("endDate", getEndDate()).append("assemblersIDs", getAssemblersIDs());
     }
 
     @Override

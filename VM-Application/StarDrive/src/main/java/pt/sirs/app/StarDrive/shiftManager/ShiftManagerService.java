@@ -1,4 +1,4 @@
-package pt.sirs.StarDrive.shiftManager;
+package pt.sirs.app.StarDrive.shiftManager;
 
 import java.time.LocalDateTime;
 
@@ -6,8 +6,8 @@ import org.bson.Document;
 
 import com.mongodb.client.MongoCollection;
 
-import pt.sirs.StarDrive.Database;
-import pt.sirs.StarDrive.shiftManager.domain.*;
+import pt.sirs.app.StarDrive.Database;
+import pt.sirs.app.StarDrive.shiftManager.domain.*;
 
 public class ShiftManagerService {
     

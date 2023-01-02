@@ -1,4 +1,4 @@
-package pt.sirs.StarDrive.production.domain;
+package pt.sirs.app.StarDrive.production.domain;
 
 public class BatteryAssembler extends Assembler{
 
@@ -6,7 +6,7 @@ public class BatteryAssembler extends Assembler{
     boolean tempAlert;
     int assembleSteps;
 
-    public BatteryAssembler(String _id, AssemblyLine _line){
+    public BatteryAssembler(int _id, AssemblyLine _line){
         super(_id, _line);
         assembleSteps = (int) (10000 * STEP_MULTIPLIER);
         info("Batteries Assembler created and added to assembly line " + getLine().getSeqNum());

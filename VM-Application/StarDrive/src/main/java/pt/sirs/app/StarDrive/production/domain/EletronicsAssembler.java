@@ -1,11 +1,11 @@
-package pt.sirs.StarDrive.production.domain;
+package pt.sirs.app.StarDrive.production.domain;
 
 public class EletronicsAssembler extends Assembler{
 
     boolean voltageAlert = false;
     int assembleSteps;
 
-    public EletronicsAssembler(String _id, AssemblyLine _line){
+    public EletronicsAssembler(int _id, AssemblyLine _line){
         super(_id, _line);
         assembleSteps = (int) (12000 * STEP_MULTIPLIER);
         info("Eletronics Assembler created and added to assembly line " + getLine().getSeqNum());
