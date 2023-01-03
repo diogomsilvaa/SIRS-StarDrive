@@ -10,19 +10,19 @@
 
 <body>
     <div>
-        <h1>Industry: StarDrive</h1>
+        <h1>Industry: StarDrive, FrontOffice</h1>
 
         <h2>Schedule</h2>
 
-        <body onload = "tableCreate()" />
+        <body onload = "refreshTable()" />
         <p id='tableSpot'></p>
+        <h2>Machines</h2>
+        <p id='machineTable'></p>
 
         <button onClick="window.location.reload();">Refresh</button>
-        <a href="./login.html">
-            <button>Private Area</button> 
-        </a>
+        <!-- <a href="./login.html"> -->
+        <button onclick="login()">Private Area</button> 
+        <!-- </a> -->
     </div>
-    <script src="js/hello.js"></script>
+    <script src="js/back.js"></script>
 </body>
-
-</html>
