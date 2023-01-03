@@ -89,10 +89,31 @@ function login(){
 
     parBis();
 
-    function parBis(){
+    async function parBis(){
         var token = "aaa"
         var pass = prompt("Password");
         var password = "admin";
+
+        // data = {username: login, password: pass}
+        // const response = await fetch(/*url*/,{
+        //     method: 'GET',
+        //     mode: 'cors', // no-cors, *cors, same-origin
+        //     cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+        //     credentials: 'same-origin', // include, *same-origin, omit
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //         // 'Content-Type': 'application/x-www-form-urlencoded',
+        //     },
+        //     redirect: 'follow', // manual, *follow, error
+        //     referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+        //     body: JSON.stringify(data) // body data type must match "Content-Type" header
+        // });
+        
+        // if(response!=="err"){
+        
+        //     window.location.href = "./private.html" + "?User=" + login + "&?token="+response.json()['token']; // meter aqui o token
+        // }
+            
         if(login === reponse && pass === password){
             //login part
             window.location.href = "./private.html" + "?User=" + login + "&?token="+token // meter aqui o token
