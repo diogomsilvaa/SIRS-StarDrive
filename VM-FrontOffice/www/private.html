@@ -1,0 +1,30 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div>
+        <h1>Private page</h1>
+        <a onload="loadPrivateArea()"/>
+        <h2 id='userName'></h2>
+        <h3>Job Status</h3>
+        <h4 id='job'></h4>
+        <section>
+            <h3>Absent Days</h3>
+            <body onload="absentLeaves()"></body> 
+            <h6 id = "absentLeaves"></h6>
+            <h2 id = 'salary'></h2>  
+               
+        <button onClick="window.location.reload();">Refresh</button>
+        <button onClick="logout()">Logout</button>
+    </div>
+    <script src="js/back.js"></script>
+</body>
+
+</html>
