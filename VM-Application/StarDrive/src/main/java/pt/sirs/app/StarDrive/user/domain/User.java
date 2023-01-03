@@ -23,6 +23,7 @@ public class User {
     private LocalDateTime creationDate;
     private Role role;
 
+    public User(){}
 
     public User(String _id, String _name, User.Role _role){
         setId(_id);

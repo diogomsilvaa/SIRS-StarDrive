@@ -11,6 +11,10 @@ public class Employee extends User{
     
     private ArrayList<Shift> shifts;
 
+    public Employee(){
+        super();
+    }
+
     public Employee(String _id, String _name, User.Role _role){
         super(_id, _name, _role);
     }

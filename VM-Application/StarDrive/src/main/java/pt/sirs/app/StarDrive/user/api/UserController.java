@@ -31,6 +31,7 @@ public class UserController {
 
     @GetMapping("/getUser")
     User getUser(@RequestParam String id){
+        // Pegar no user e na token que vem com ele e ver se está autenticado
         return userService.getUser(id);
     }
 
