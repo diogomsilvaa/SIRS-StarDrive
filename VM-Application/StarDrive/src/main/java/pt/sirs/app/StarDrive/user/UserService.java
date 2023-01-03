@@ -19,6 +19,10 @@ public class UserService {
     public UserService(){
     }
 
+    public User getUser(String id){
+        return userRepository.findById(id).orElse(null);
+    }
+
     public User createUser(String name, User.Role role){
         User user;
         switch (role) {
@@ -36,6 +40,8 @@ public class UserService {
         userRepository.save(user);
         return user;
     }
+
+
 
 
 

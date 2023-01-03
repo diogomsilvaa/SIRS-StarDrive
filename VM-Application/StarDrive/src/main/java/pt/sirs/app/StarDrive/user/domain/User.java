@@ -6,7 +6,6 @@ import java.time.ZoneOffset;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-
 @Document(collection = "users")
 public class User {
     
@@ -19,6 +18,7 @@ public class User {
 
     @Id
     private String id;
+    private double salary;
     private String name;
     private LocalDateTime creationDate;
     private Role role;
@@ -61,6 +61,14 @@ public class User {
 
     public Role getRole() {
         return role;
+    }
+
+    public void setSalary(double salary) {
+        this.salary = salary;
+    }
+
+    public double getSalary() {
+        return salary;
     }
 
 }

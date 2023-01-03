@@ -2,9 +2,11 @@ package pt.sirs.app.StarDrive.user.domain;
 
 import java.util.ArrayList;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import pt.sirs.app.StarDrive.shiftManager.domain.Shift;
 
-
+@Document(collection = "users")
 public class Employee extends User{
     
     private ArrayList<Shift> shifts;
