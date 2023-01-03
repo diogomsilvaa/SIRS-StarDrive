@@ -4,19 +4,18 @@
 
 ## Procedure
 
-### JDK 19.0.1
+### JDK 17
 
-Run this commands to install the JDK19
+Run this commands to install the JDK17
 
 ```
-curl -o https://download.oracle.com/java/19/latest/jdk-19_linux-x64_bin.deb
-sudo apt-get install jdk-19_linux-x64_bin.deb
+sudo apt install openjdk-17-jdk
 ```
 
 Set JAVA_HOME at ~/.bashrc:
 
 ```
-export JAVA_HOME=/usr/lib/jvm/jdk-19
+export JAVA_HOME=/opt/jdk-17
 export PATH=$JAVA_HOME/bin:$PATH
 ```
 
