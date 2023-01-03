@@ -3,36 +3,39 @@ package pt.sirs.app.StarDrive.shiftManager.domain;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-import org.bson.Document;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import pt.sirs.app.StarDrive.users.domain.Employee;
+import pt.sirs.app.StarDrive.user.domain.Employee;
 
+@Document(collection = "shifts")
 public class Shift {
     
+    @Id
     private String id;
     private ArrayList<Employee> employees;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+    private String startTime;
+    private String endTime;
 
     public Shift(String id, LocalDateTime _startTime, LocalDateTime _endTime){
         setId(id);
-        setStartTime(_startTime);
-        setEndTime(_endTime);
+        setStartTime(_startTime.toString());
+        setEndTime(_endTime.toString());
     }
 
-    public void setStartTime(LocalDateTime startTime) {
+    public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
 
-    public LocalDateTime getStartTime() {
+    public String getStartTime() {
         return startTime;
     }
 
-    public void setEndTime(LocalDateTime endTime) {
+    public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
 
-    public LocalDateTime getEndTime() {
+    public String getEndTime() {
         return endTime;
     }
 
@@ -60,7 +63,4 @@ public class Shift {
         return employeesIDs;
     }
 
-    public Document toDocument(){
-        return new Document("id", getId()).append("startTime", getStartTime()).append("endTime", getEndTime()).append("employees", getEmployeesIDs());
-    }
 }

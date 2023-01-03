@@ -1,4 +1,4 @@
-package pt.sirs.app.StarDrive.users.domain;
+package pt.sirs.app.StarDrive.user.domain;
 
 import java.util.ArrayList;
 

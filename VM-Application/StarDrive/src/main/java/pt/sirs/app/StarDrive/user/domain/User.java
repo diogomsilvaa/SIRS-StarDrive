@@ -1,11 +1,13 @@
-package pt.sirs.app.StarDrive.users.domain;
+package pt.sirs.app.StarDrive.user.domain;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
-import org.bson.Document;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 
+@Document(collection = "users")
 public class User {
     
     public enum Role {EMPLOYEE, ENGINEER}
@@ -15,6 +17,7 @@ public class User {
         public static final String ENGINEER = "engineer";
     }
 
+    @Id
     private String id;
     private String name;
     private LocalDateTime creationDate;
@@ -60,7 +63,4 @@ public class User {
         return role;
     }
 
-    public Document toDocument(){
-        return new Document("id", getId()).append("name", getName()).append("creationDate", getCreationDate()).append("role", getRole());
-    }
 }

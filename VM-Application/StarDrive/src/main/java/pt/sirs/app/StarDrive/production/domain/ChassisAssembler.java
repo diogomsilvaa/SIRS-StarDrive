@@ -5,8 +5,8 @@ public class ChassisAssembler extends Assembler{
     boolean stabilityAlert = false;
     int assembleSteps;
 
-    public ChassisAssembler(int _id,AssemblyLine _line){
-        super(_id, _line);
+    public ChassisAssembler(int _id){
+        super(_id);
         assembleSteps = (int) (12000 * STEP_MULTIPLIER);
         info("Chasis Assembler created and added to assembly line " + getLine().getSeqNum());
 

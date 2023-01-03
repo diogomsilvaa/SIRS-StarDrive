@@ -1,24 +1,30 @@
 package pt.sirs.app.StarDrive.production.domain;
 
 import java.util.ArrayList;
-import java.util.Date;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import pt.sirs.app.StarDrive.production.ProductionService;
 
 @Document(collection = "lines")
 public class AssemblyLine {
+
+    @Id
+    private String id;
+
     private float productionRate;
     private boolean onProduction;
-    private Date startDate;
-    private Date endDate;
+    private String startDate = null;
+    private String endDate = null;
+
+    @Transient
     private static int seqNum = 0;
-    private String id;
+
+    @Transient
     private ArrayList<Assembler> assemblers;
     
 
-    public AssemblyLine(ProductionService _prod){
+    public AssemblyLine(){
         assemblers = new ArrayList<Assembler>();
         setId("L" + seqNum);
         seqNum++;
@@ -39,16 +45,16 @@ public class AssemblyLine {
     public void setProductionRate(float productionRate) {
         this.productionRate = productionRate;
     }
-    public Date getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
-    public void setStartDate(Date startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
-    public Date getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
-    public void setEndDate(Date endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
     public int getSeqNum() {

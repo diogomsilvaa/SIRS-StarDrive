@@ -1,14 +1,18 @@
 package pt.sirs.app.StarDrive.production.domain;
 
+import org.springframework.data.annotation.Transient;
+
 public class EletronicsAssembler extends Assembler{
 
     boolean voltageAlert = false;
+
+    @Transient
     int assembleSteps;
 
-    public EletronicsAssembler(int _id, AssemblyLine _line){
-        super(_id, _line);
+    public EletronicsAssembler(int _id){
+        super(_id);
         assembleSteps = (int) (12000 * STEP_MULTIPLIER);
-        info("Eletronics Assembler created and added to assembly line " + getLine().getSeqNum());
+        info("Eletronics Assembler created");
 
     }
 

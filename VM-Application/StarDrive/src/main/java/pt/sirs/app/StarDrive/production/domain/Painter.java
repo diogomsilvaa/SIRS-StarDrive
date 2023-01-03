@@ -6,8 +6,8 @@ public class Painter extends Assembler{
     int assembleSteps;
 
 
-    public Painter(int _id, AssemblyLine _line){
-        super(_id, _line);
+    public Painter(int _id){
+        super(_id);
         assembleSteps = (int) (3000 * STEP_MULTIPLIER);
         setPaintLevels(100, 100, 100);
         info("Painter created and added to assembly line " + getLine().getSeqNum());

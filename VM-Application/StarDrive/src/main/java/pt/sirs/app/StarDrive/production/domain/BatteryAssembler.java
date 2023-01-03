@@ -6,8 +6,8 @@ public class BatteryAssembler extends Assembler{
     boolean tempAlert;
     int assembleSteps;
 
-    public BatteryAssembler(int _id, AssemblyLine _line){
-        super(_id, _line);
+    public BatteryAssembler(int _id){
+        super(_id);
         assembleSteps = (int) (10000 * STEP_MULTIPLIER);
         info("Batteries Assembler created and added to assembly line " + getLine().getSeqNum());
 

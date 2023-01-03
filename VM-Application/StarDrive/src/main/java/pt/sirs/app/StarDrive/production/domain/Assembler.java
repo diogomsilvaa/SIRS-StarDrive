@@ -3,6 +3,7 @@ package pt.sirs.app.StarDrive.production.domain;
 import java.util.logging.*;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.Duration;
@@ -10,17 +11,26 @@ import java.util.Random;
 
 @Document(collection = "assemblers")
 public abstract class Assembler {
+    
+    @Id
     private String id;
+
+
     private float productionRate;
     private AssemblyLine line;
     private Duration timeRunning;
-    static final double STEP_MULTIPLIER = 100000;
-    private Logger logger;
-    Random rand = new Random();
 
-    public Assembler(int id, AssemblyLine _line){
+    @Transient
+    static final double STEP_MULTIPLIER = 100000;
+
+    @Transient
+    private Logger logger;
+
+    @Transient
+    private Random rand = new Random();
+
+    public Assembler(int id){
         setId("A" + id);
-        setLine(_line);
         logger = Logger.getLogger(Assembler.class.getName());
         logger.setLevel(Level.INFO);
         timeRunning = Duration.ZERO;
