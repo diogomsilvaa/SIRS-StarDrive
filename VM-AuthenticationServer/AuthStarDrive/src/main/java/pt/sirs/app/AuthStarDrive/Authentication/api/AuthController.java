@@ -1,5 +1,8 @@
 package pt.sirs.app.AuthStarDrive.Authentication.api;
 
+import java.util.NoSuchElementException;
+import javax.naming.NoPermissionException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -19,6 +22,8 @@ public class AuthController {
         byte[] response;
         try {
             response = service.doLogin("id", "pass");
+        } catch (NoPermissionException e) {
+            throw new ResponseStatusException(HttpStatusCode.valueOf(403));
         } catch (NoSuchElementException e) {
             throw new ResponseStatusException(HttpStatusCode.valueOf(404));
         } catch (Exception e) {
@@ -34,6 +39,8 @@ public class AuthController {
                 return "Password changed";
             }
             return "Invalid credentials";
+        } catch (NoPermissionException e) {
+            throw new ResponseStatusException(HttpStatusCode.valueOf(403));
         } catch (NoSuchElementException e) {
             throw new ResponseStatusException(HttpStatusCode.valueOf(404));
         } catch (Exception e) {

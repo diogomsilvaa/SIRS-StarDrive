@@ -25,8 +25,8 @@ public class AuthenticationService {
         }
     }
 
-    public void addUsers(String id, String pass) {
-        auth.addUsers(id, pass);
+    public void addUser(String id, String pass) {
+        auth.addUser(id, pass);
 
         File file = new File("Serializable.txt");
         file.createNewFile();

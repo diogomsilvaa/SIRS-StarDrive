@@ -13,6 +13,7 @@ import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import javax.naming.NoPermissionException;
 
 import org.json.JSONObject;
 
@@ -42,9 +43,9 @@ public class Authentication implements Serializable{
         return key;
     }
 
-    public void addUsers(String id, String pass) throws Exception {
+    public void addUser(String id, String pass) throws Exception {
         if (users.containsKey(id)) {
-            throw new Exception("User already has password");
+            throw new Exception("User already exists");
         }
         byte[] encPass = hashPass(pass);
         users.put(id, encPass);
@@ -58,7 +59,7 @@ public class Authentication implements Serializable{
         return userPass;
     }
 
-    public boolean checkPass(String id, String pass) throws Exception{
+    public boolean checkPass(String id, String pass) throws NoPermissionException{
         String encPass;
         String realPass;
         encPass = hashPass(pass);
@@ -66,7 +67,7 @@ public class Authentication implements Serializable{
         if (Arrays.equals(encPass, realPass)) {
             return true;
         }
-        return false;
+        throw new NoPermissionException();
     }
 
     public byte[] encrypt(String data) throws Exception{
