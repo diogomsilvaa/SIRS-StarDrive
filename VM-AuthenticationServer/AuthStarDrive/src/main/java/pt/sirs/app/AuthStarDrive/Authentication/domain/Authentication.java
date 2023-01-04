@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.io.File;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.Serializable;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -16,7 +17,8 @@ import org.json.JSONObject;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;  
 
-public class Authentication {
+public class Authentication implements Serializable{
+    private static final long serialVersionUID = 1L;
     private SecretKey myKey, serverKey;
     private HashMap<String, String> users = new HashMap<String, String>();
 

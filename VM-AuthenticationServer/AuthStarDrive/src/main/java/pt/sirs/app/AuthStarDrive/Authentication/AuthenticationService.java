@@ -10,12 +10,31 @@ public class AuthenticationService {
 
     public AuthenticationService() {
         try {
-            auth = new Authentication();
+            File f = new File("Serializable.txt");
+            if (!f.exists()) {
+                auth = new Authentication();
+            }
+            else {
+                ObjectInputStream in = new ObjectInputStream(new FileInputStream("Serializable.txt"));  
+                auth = (Authentication)in.readObject();  
+            }
             System.out.println("Authentication service started");
         }
         catch (Exception e) {
             System.out.println(e.toString());
         }
+    }
+
+    public void addUsers(String id, String pass) {
+        auth.addUsers(id, pass);
+
+        File file = new File("Serializable.txt");
+        file.createNewFile();
+        FileOutputStream fout = new FileOutputStream(file, false);    
+        ObjectOutputStream out = new ObjectOutputStream(fout);    
+        out.writeObject(auth);    
+        out.flush();    
+        out.close();    
     }
 
     public JSONObject doSomething(String ip, String id, String pass) {
