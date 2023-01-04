@@ -129,7 +129,7 @@ function logout(){
     window.location.href='./index.html';
 }
 
-function loadEmployeeShift(){
+function loadEmployees(){
     html = "";
         obj = {
             "1" : "Name",
@@ -162,7 +162,15 @@ function goCreateShift(){
     window.location.href='./employeeShift.html'+ "?User=" + username + "&token="+token;
 }
 
-function createEmplyeeShift(){
+function goChangeEmployee(){
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    var username = urlParams.get("User")
+    var token = urlParams.get("token")
+    window.location.href='./employeeChange.html'+ "?User=" + username + "&token="+token;
+}
+
+function createEmployeeShift(){
     console.log(document.getElementById("employeeDropTable").value)
     console.log(document.getElementById("fdata").value)
     console.log(document.getElementById("fduration").value)
@@ -174,4 +182,17 @@ function createEmplyeeShift(){
     var token = urlParams.get("token")
     window.location.href='./private.html' + "?User=" + username + "&token="+token;
 
+}
+
+function changeEmployee(){
+    console.log(document.getElementById("fid").value)
+    console.log(document.getElementById("fpass").value)
+    console.log(document.getElementById("fpass").value)
+    //send request
+
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    var username = urlParams.get("User")
+    var token = urlParams.get("token")
+    window.location.href='./private.html' + "?User=" + username + "&token="+token;
 }
