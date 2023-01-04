@@ -85,17 +85,15 @@ function tableMachines(id, datas){
 function login(){
          
     var login = prompt("Username");
-    var reponse = "admin";
 
     parBis();
 
     async function parBis(){
         var token = ""
         var pass = prompt("Password");
-        var password = "admin";
 
         data = {id: login, pass: pass}
-        fetch("https//:10.0.3.200:8080/auth",{
+        fetch("https://10.0.3.200:8080/auth",{
             method: 'GET',
             mode: 'cors', // no-cors, *cors, same-origin
             cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
@@ -111,39 +109,58 @@ function login(){
             // http status
             if(!response.ok)
                 window.alert("Error");
-                window.location.href = "./index.html" 
+                window.location.href = "./index.html";
+                return;
 
         }).then((data) => {
             token = data
-        })      
+        });      
         
-        if(response.then){
-            window.location.href = "./private.html" + "?User=" + login + "&?token=" + token // meter aqui o token
-        }
+        fetch("https://192.168.0.1:8080/loginFront",{
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: JSON.stringify({ token: token, id: login}) // body data type must match "Content-Type" header
+        }).then((response) => {
+            // http status
+            if(!response.ok)
+                window.alert("Error");
+                window.location.href = "./index.html";
+                return;
+        });
 
 
 
-        // if(response!=="err"){
-        
-        //     window.location.href = "./private.html" + "?User=" + login + "&?token="+response.json()['token']; // meter aqui o token
-        // }
-            
-        if(login === reponse && pass === password){
-            //login part
-            window.location.href = "./private.html" + "?User=" + login + "&?token="+token // meter aqui o token
-        }
-        else{
-            window.alert("User or password incorrect");
-        }
+        window.location.href = "./private.html" + "?token=" + token // meter aqui o token
+
     }  
 }
 
 function loadPrivateArea(){
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
-    var username = urlParams.get("User")
+    var token = urlParams.get("token")
+
+    fetch("https://192.168.0.1:8080/loginFront",{
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: JSON.stringify({ token: token}) // body data type must match "Content-Type" header
+        }).then((response) => {
+            // http status
+            if(!response.ok)
+                window.alert("Error");
+                window.location.href = "./index.html";
+                return;
+        }).then((data) => {
+            user = data //VERIFICAR ISTO PRECISA DE SER COMPOSTO
+        }); 
     var user = document.getElementById("userName");
-    var text = document.createTextNode("Hello, " + username);
+    var text = document.createTextNode("Hello, " + user);
 
     user.appendChild(text);
 }
