@@ -8,14 +8,16 @@ import java.io.File;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.Serializable;
+import java.security.SecureRandom;
+import java.security.spec.KeySpec;
 
 import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 import javax.naming.NoPermissionException;
 
-import org.json.JSONObject;
 
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;  
@@ -27,20 +29,15 @@ public class Authentication implements Serializable{
     private HashMap<String, byte[]> users = new HashMap<String, byte[]>();
 
     public Authentication() throws Exception{
-        serverKey = getKey("BackendKey.txt");
+        serverKey = getKey(System.getenv("BACK_SERVER_KEY"));
         initializePBKDF2();
     }
 
-    public SecretKey getKey(String filename) throws Exception{
-        File file = new File(filename);
+    public SecretKey getKey(String key) throws Exception{
  
-        BufferedReader br = new BufferedReader(new FileReader(file));
-        String st = br.readLine();
-        br.close();
-
-        byte[] decodedKey = Base64.getDecoder().decode(st);
-        SecretKey key = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES"); 
-        return key;
+        byte[] decodedKey = Base64.getDecoder().decode(key);
+        SecretKey secKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES"); 
+        return secKey;
     }
 
     public void addUser(String id, String pass) throws Exception {
@@ -51,17 +48,17 @@ public class Authentication implements Serializable{
         users.put(id, encPass);
     }
 
-    public String getPassword(String id) throws NoSuchElementException {
-        String userPass = users.get(id);
+    public byte[] getPassword(String id) throws NoSuchElementException {
+        byte[] userPass = users.get(id);
         if (userPass == null) {
             throw new NoSuchElementException();
         }
         return userPass;
     }
 
-    public boolean checkPass(String id, String pass) throws NoPermissionException{
-        String encPass;
-        String realPass;
+    public boolean checkPass(String id, String pass) throws Exception, NoPermissionException{
+        byte[] encPass;
+        byte[] realPass;
         encPass = hashPass(pass);
         realPass = getPassword(id);
         if (Arrays.equals(encPass, realPass)) {
@@ -82,9 +79,10 @@ public class Authentication implements Serializable{
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
         LocalDateTime now = LocalDateTime.now();
 
-        token = dtf.format(now) + ":";
+        token = "StarDriveDB:";
+        token += dtf.format(now) + ":";
         now.plusMinutes(10);
-        token = token + dtf.format(now) + ":" + id;
+        token += dtf.format(now) + ":" + id;
 
         return encrypt(token);
     }
@@ -103,7 +101,7 @@ public class Authentication implements Serializable{
         random.nextBytes(salt);
     }
 
-    private byte[] hashPass(String pass) {
+    private byte[] hashPass(String pass) throws Exception {
         KeySpec spec = new PBEKeySpec(pass.toCharArray(), salt, 65536, 128);
         SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
         return factory.generateSecret(spec).getEncoded();

@@ -1,3 +1,0 @@
-Carlos:password1
-Diogo:password2
-Miguel:password3 com espaços

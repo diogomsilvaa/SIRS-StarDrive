@@ -8,7 +8,7 @@ import java.util.concurrent.TimeoutException;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
-import org.springframework.stereotype.Service;
+
 
 public class AuthService {
     
@@ -19,17 +19,19 @@ public class AuthService {
 
     public AuthService(String _token){
         setToken(_token);
-        String keyString = System.getenv("STARDRIVE_AES_KEY");
-        aesKey = new SecretKeySpec(keyString.getBytes(), "AES");
+        String keyString = System.getenv("BACK_SERVER_KEY");
+        //byte[] decodedKey = Base64.getDecoder().decode(keyString);
+        aesKey = new SecretKeySpec(keyString.getBytes(), "AES"); 
     }
 
     
     
-    private void decrypt() throws Exception{
+    public String decrypt() throws Exception{
         Cipher cipher = Cipher.getInstance("AES");
         cipher.init(Cipher.DECRYPT_MODE, aesKey);
         byte[] encrypted = cipher.doFinal(getToken().getBytes());
         message = new String(encrypted);
+        return message;
     }
     
     

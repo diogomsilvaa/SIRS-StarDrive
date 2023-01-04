@@ -1,7 +1,13 @@
 package pt.sirs.app.AuthStarDrive.Authentication;
 
 import pt.sirs.app.AuthStarDrive.Authentication.domain.*;
-import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,6 +23,7 @@ public class AuthenticationService {
             else {
                 ObjectInputStream in = new ObjectInputStream(new FileInputStream("Serializable.txt"));  
                 auth = (Authentication)in.readObject();  
+                in.close();
             }
             System.out.println("Authentication service started");
         }
@@ -25,9 +32,9 @@ public class AuthenticationService {
         }
     }
 
-    public void addUser(String id, String pass) {
+    public void addUser(String id, String pass) throws Exception{
+        
         auth.addUser(id, pass);
-
         File file = new File("Serializable.txt");
         file.createNewFile();
         FileOutputStream fout = new FileOutputStream(file, false);    
@@ -39,7 +46,7 @@ public class AuthenticationService {
 
     public byte[] doLogin(String id, String pass) throws Exception {
         if (!auth.checkPass(id, pass)) {
-            return "Invalid credentials";
+            return "Invalid credentials".getBytes();
         }
         return auth.tokenGenerator(id);
     }
