@@ -93,47 +93,44 @@ function login(){
         var pass = prompt("Password");
 
         data = {id: login, pass: pass}
-        fetch("https://10.0.3.200:8080/auth",{
-            method: 'GET',
-            mode: 'cors', // no-cors, *cors, same-origin
-            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-            credentials: 'same-origin', // include, *same-origin, omit
+
+        fetch("https://localhost:8080/auth",{
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
-                // 'Content-Type': 'application/x-www-form-urlencoded',
             },
-            redirect: 'follow', // manual, *follow, error
-            referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
             body: JSON.stringify(data) // body data type must match "Content-Type" header
         }).then((response) => {
             // http status
-            if(!response.ok)
+            if(!response.ok){
                 window.alert("Error");
-                window.location.href = "./index.html";
+                //window.location.href = "./index.html";
                 return;
+            }
 
-        }).then((data) => {
-            token = data
-        });      
+            response.json().then((data) => {
+                console.log(data)
+            })
+
+        })   
         
-        fetch("https://192.168.0.1:8080/loginFront",{
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-                // 'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: JSON.stringify({ token: token, id: login}) // body data type must match "Content-Type" header
-        }).then((response) => {
-            // http status
-            if(!response.ok)
-                window.alert("Error");
-                window.location.href = "./index.html";
-                return;
-        });
+        // fetch("https://192.168.0.1:8080/loginFront",{
+        //     method: 'GET',
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //         // 'Content-Type': 'application/x-www-form-urlencoded',
+        //     },
+        //     body: JSON.stringify({ token: token, id: login}) // body data type must match "Content-Type" header
+        // }).then((response) => {
+        //     // http status
+        //     if(!response.ok)
+        //         window.alert("Error");
+        //         window.location.href = "./index.html";
+        //         return;
+        // });
 
 
-
-        window.location.href = "./private.html" + "?token=" + token // meter aqui o token
+        // window.location.href = "./private.html" + "?token=" + token // meter aqui o token
 
     }  
 }
@@ -208,7 +205,7 @@ function machinesData(){
         { name: "Monte Amiata", job: "asdsad", time: "01:00-02:00",  c: Math.floor(Math.random() * 100 ) }
     ];
     
-    console.log([abs2,abs3])
+    //console.log([abs2,abs3])
     tableMachines("machineTable",[abs2,abs3]);
 }
 
