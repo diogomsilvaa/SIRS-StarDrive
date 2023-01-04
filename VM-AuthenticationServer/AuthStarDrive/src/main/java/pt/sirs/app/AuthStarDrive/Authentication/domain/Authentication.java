@@ -24,16 +24,20 @@ public class Authentication {
         KeyGenerator generator = KeyGenerator.getInstance("AES");
         generator.init(128);
         myKey = generator.generateKey();
-        //getBackendKey();
+        serverKey = getKey("BackendKey.txt");
+        myKey = getKey("AuthKey.txt");
     }
 
-    public void getBackendKey() throws Exception{
-        File file = new File("BackendKey.txt");
+    public SecretKey getKey(String filename) throws Exception{
+        File file = new File(filename);
  
         BufferedReader br = new BufferedReader(new FileReader(file));
         String st = br.readLine();
         br.close();
-        serverKey = new SecretKeySpec(st.getBytes(), "AES");
+
+        byte[] decodedKey = Base64.getDecoder().decode(st);
+        SecretKey key = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES"); 
+        return key;
     }
 
     public void addUsers(String id, String pass) throws Exception {
@@ -71,7 +75,7 @@ public class Authentication {
         return false;
     }
 
-    public String encrypt(Boolean isAuth, String data) throws Exception{
+    public byte[] encrypt(Boolean isAuth, String data) throws Exception{
         SecretKey key;
         if (isAuth) {
             key = myKey;
@@ -81,7 +85,7 @@ public class Authentication {
         Cipher encrypt = Cipher.getInstance("AES");
         encrypt.init(Cipher.ENCRYPT_MODE, key);
         byte[] encryptedText = encrypt.doFinal(data.getBytes());
-        return Base64.getEncoder().encodeToString(encryptedText);
+        return encryptedText;
     }
 
     public JSONObject tokenGenerator(String id) throws Exception{
@@ -94,7 +98,7 @@ public class Authentication {
         now.plusMinutes(10);
         token = token + dtf.format(now) + ":" + id;
 
-        String encryptToken = encrypt(false, token);
+        byte[] encryptToken = encrypt(false, token);
         jo.put("token", encryptToken);
 
         return jo;
