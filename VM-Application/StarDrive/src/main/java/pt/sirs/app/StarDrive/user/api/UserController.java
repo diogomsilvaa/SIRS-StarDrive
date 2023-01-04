@@ -2,8 +2,10 @@ package pt.sirs.app.StarDrive.user.api;
 
 import java.util.concurrent.TimeoutException;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +23,39 @@ public class UserController {
     
     @Autowired
     UserService userService;
+
+    @GetMapping("/loginFront")
+    void loginFront(@RequestParam String token, @RequestParam String id){
+        AuthService auth = new AuthService(token);
+        String userId = null;
+        try {
+            id = auth.VerifyToken();
+        } catch (TimeoutException e) {
+            throw new ResponseStatusException(HttpStatusCode.valueOf(408));
+        } catch (Exception e){
+            throw new ResponseStatusException(HttpStatusCode.valueOf(500));
+        }
+        if(userId != id) throw new ResponseStatusException(HttpStatusCode.valueOf(401));
+        User user = userService.getUser(id);
+        if(user == null) throw new ResponseStatusException(HttpStatusCode.valueOf(404));
+    }
+
+    @GetMapping("/loginBack")
+    void loginBack(@RequestParam String token, @RequestParam String id){
+        AuthService auth = new AuthService(token);
+        String userId = null;
+        try {
+            id = auth.VerifyToken();
+        } catch (TimeoutException e) {
+            throw new ResponseStatusException(HttpStatusCode.valueOf(408));
+        } catch (Exception e){
+            throw new ResponseStatusException(HttpStatusCode.valueOf(500));
+        }
+        if(userId != id) throw new ResponseStatusException(HttpStatusCode.valueOf(401));
+        User user = userService.getUser(id);
+        if(user == null) throw new ResponseStatusException(HttpStatusCode.valueOf(404));
+        if(user.getRole() != User.Role.ENGINEER) throw new ResponseStatusException(HttpStatusCode.valueOf(403));
+    }
 
     @GetMapping("/getUser")
     User getUser(@RequestParam String token){
