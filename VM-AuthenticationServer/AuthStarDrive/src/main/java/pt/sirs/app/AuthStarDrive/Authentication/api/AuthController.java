@@ -3,8 +3,11 @@ package pt.sirs.app.AuthStarDrive.Authentication.api;
 import java.util.NoSuchElementException;
 import javax.naming.NoPermissionException;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import pt.sirs.app.AuthStarDrive.Authentication.AuthenticationService;
+import pt.sirs.app.AuthStarDrive.Authentication.domain.Token;
 
 @RestController
 public class AuthController {
@@ -20,11 +24,12 @@ public class AuthController {
     @Autowired
     private AuthenticationService service;
 
+    @CrossOrigin
     @GetMapping("/auth")
-    String requestToken(@RequestParam String id, @RequestParam String pass){
-        byte[] response;
+    Token requestToken(@RequestParam String id, @RequestParam String pass){
+        byte[] token;
         try {
-            response = service.doLogin(id, pass);
+            token = service.doLogin(id, pass);
         } catch (NoPermissionException e) {
             throw new ResponseStatusException(HttpStatus.valueOf(403));
         } catch (NoSuchElementException e) {
@@ -33,7 +38,7 @@ public class AuthController {
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.valueOf(500));
         }
-        return response.toString();
+        return new Token(token.toString());
     }
 
     @PutMapping("/pass")
