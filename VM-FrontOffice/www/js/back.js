@@ -157,19 +157,15 @@ function loadPrivateArea(){
                 window.location.href = "./index.html";
                 return;
         }).then((data) => {
-            user = data //VERIFICAR ISTO PRECISA DE SER COMPOSTO
+            user = data
         }); 
     var user = document.getElementById("userName");
-    var text = document.createTextNode("Hello, " + user);
-
+    var text = document.createTextNode("Hello, " + user["name"]);
     user.appendChild(text);
-}
-
-function salaryStatus(){
-    //get with token
     
+
     var salary = document.getElementById("salary");
-    var text = document.createTextNode("Salary: " + "10000$");
+    var text = document.createTextNode(user["salary"]);
     salary.appendChild(text);
 }
 
