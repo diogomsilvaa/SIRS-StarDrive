@@ -6,22 +6,22 @@ import java.util.ArrayList;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import pt.sirs.app.StarDrive.user.domain.Employee;
-
 @Document(collection = "shifts")
 public class Shift {
     
     @Id
     private String id;
-    private ArrayList<Employee> employees;
+    private ArrayList<String> employeesIDs;
     private String startTime;
     private String endTime;
 
-    public Shift(String id, LocalDateTime _startTime, LocalDateTime _endTime){
+    public Shift(String id, String startTime, String endTime){
         setId(id);
-        setStartTime(_startTime.toString());
-        setEndTime(_endTime.toString());
+        setStartTime(startTime);
+        setEndTime(endTime);
+        employeesIDs = new ArrayList<String>();
     }
+    
 
     public void setStartTime(String startTime) {
         this.startTime = startTime;
@@ -47,19 +47,15 @@ public class Shift {
         return id;
     }
 
-    public void addEmployee(Employee employee){
-        employees.add(employee);
-        employee.addShift(this);
+    public void addEmployee(String employeeId){
+        employeesIDs.add(employeeId);
     }
 
-    public void removeEmployee(Employee employee){
-        employees.remove(employee);
-        employee.removeShift(this);
+    public void removeEmployee(String employeeId){
+        employeesIDs.remove(employeeId);
     }
 
     public ArrayList<String> getEmployeesIDs() {
-        ArrayList<String> employeesIDs = new ArrayList<>();
-        employees.forEach(e -> employeesIDs.add(e.getId()));;
         return employeesIDs;
     }
 

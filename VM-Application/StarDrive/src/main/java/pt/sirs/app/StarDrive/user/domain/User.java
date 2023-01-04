@@ -2,9 +2,12 @@ package pt.sirs.app.StarDrive.user.domain;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import pt.sirs.app.StarDrive.shiftManager.domain.Shift;
 
 @Document(collection = "users")
 public class User {
@@ -22,14 +25,18 @@ public class User {
     private String name;
     private LocalDateTime creationDate;
     private Role role;
+    private ArrayList<String> shiftsIDs;
+
 
     public User(){}
 
-    public User(String _id, String _name, User.Role _role){
-        setId(_id);
-        setName(_name);
+    public User(String id, String name, User.Role role, double salary){
+        setId(id);
+        setName(name);
         setCreationDate(LocalDateTime.now(ZoneOffset.UTC));
-        setRole(_role);
+        setRole(role);
+        setSalary(salary);
+        shiftsIDs = new ArrayList<String>();
     }
 
     public void setId(String id) {
@@ -72,4 +79,15 @@ public class User {
         return salary;
     }
 
+    public void addShift(String shiftID){
+        shiftsIDs.add(shiftID);
+    }
+
+    public void removeShift(String shiftID){
+        shiftsIDs.remove(shiftID);
+    }
+    
+    public ArrayList<String> getShiftsIDs() {
+        return shiftsIDs;
+    }
 }
