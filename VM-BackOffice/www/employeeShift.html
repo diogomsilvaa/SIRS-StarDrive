@@ -1,0 +1,34 @@
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div>
+        <h1>Industry: StarDrive, BackOffice</h1>
+        <h3>Employee shift</h3>
+        <body onload="loadEmployeeShift()"></body>
+
+        <select name="Emplyee" id="employeeDropTable"></select>
+        <label for="fdata">Date:</label>
+        <input type="date" id="fdata" name="fdata">
+        <label for="fduration">Duration:</label>
+        <input type="text" id="fduration" name="fduration">
+        <label >hours</label><br><br>
+        
+
+        <button onClick ="createEmplyeeShift()">Create</button>
+        
+        <button onClick="backPrivate()">Back</button>
+        <button onClick="logout()">Logout</button>
+    </div>
+    <script src="js/back.js"></script>
+</body>
+
+</html>
