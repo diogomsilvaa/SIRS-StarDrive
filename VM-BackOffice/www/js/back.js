@@ -73,14 +73,7 @@ function tableGen(data){
 
     return table;
 }
-function tableMachines(id, datas){
-    const divShowData = document.getElementById(id);
-    divShowData.innerHTML = "";
-    
-    for(var i=0;i<datas.length;i++){
-        divShowData.appendChild(tableGen(datas[i]));
-    }
-}
+
 
 function login(){
          
@@ -103,26 +96,26 @@ function login(){
     }  
 }
 
+let employees = [
+    { Name: "Carlos", Salary: "1231231"},
+    { Name: "Diogo", Salary: "1231231"},
+    { Name: "Miguel", Salary: "1231231"}
+];
 function loadPrivateArea(){
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     var username = urlParams.get("User")
-    console.log("ai")
-    console.log("user",username)
     var user = document.getElementById("userName");
     var text = document.createTextNode("Hello, " + username);
 
     user.appendChild(text);
+    var table = document.getElementById("tableSpot");
+    table.appendChild(tableGen(employees))
+
 }
 
 
-let abs = [
-    { Day: "01-01-2012", Reason: "Coding"},
-    { Day: "01-01-2012", Reason: "Read"},
-    { Day: "01-01-2012", Reason: "ghh"},
-    { Day: "01-01-2012", Reason: "aasdas"},
-    { Day: "01-01-2012", Reason: "asdsad"}
-];
+
 
 
 function logout(){
