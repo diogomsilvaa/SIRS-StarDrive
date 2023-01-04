@@ -2,6 +2,8 @@ package pt.sirs.app.AuthStarDrive.Authentication.domain;
 
 import java.util.Base64;
 import java.util.HashMap;
+import java.util.NoSuchElementException;
+import java.util.Arrays;
 import java.io.File;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -19,15 +21,13 @@ import java.time.LocalDateTime;
 
 public class Authentication implements Serializable{
     private static final long serialVersionUID = 1L;
-    private SecretKey myKey, serverKey;
-    private HashMap<String, String> users = new HashMap<String, String>();
+    private byte[] salt;
+    private SecretKey serverKey;
+    private HashMap<String, byte[]> users = new HashMap<String, byte[]>();
 
     public Authentication() throws Exception{
-        KeyGenerator generator = KeyGenerator.getInstance("AES");
-        generator.init(128);
-        myKey = generator.generateKey();
         serverKey = getKey("BackendKey.txt");
-        myKey = getKey("AuthKey.txt");
+        initializePBKDF2();
     }
 
     public SecretKey getKey(String filename) throws Exception{
@@ -46,52 +46,37 @@ public class Authentication implements Serializable{
         if (users.containsKey(id)) {
             throw new Exception("User already has password");
         }
-        String encPass = encrypt(true, pass);
+        byte[] encPass = hashPass(pass);
         users.put(id, encPass);
     }
 
-    public String getPassword(String id) throws Exception {
+    public String getPassword(String id) throws NoSuchElementException {
         String userPass = users.get(id);
         if (userPass == null) {
-            throw new Exception("User doesn´t exist");
+            throw new NoSuchElementException();
         }
         return userPass;
     }
 
-    public boolean checkPass(String ip, String id, String pass) {
+    public boolean checkPass(String id, String pass) throws Exception{
         String encPass;
         String realPass;
-        try {
-            encPass = encrypt(true, pass);
-            realPass = getPassword(id).toString();
-        }
-        catch (Exception e) {
-            return false;
-        }
-        if (realPass == null) {
-            return false;
-        }
-        if (realPass == encPass) {
+        encPass = hashPass(pass);
+        realPass = getPassword(id);
+        if (Arrays.equals(encPass, realPass)) {
             return true;
         }
         return false;
     }
 
-    public byte[] encrypt(Boolean isAuth, String data) throws Exception{
-        SecretKey key;
-        if (isAuth) {
-            key = myKey;
-        } else {
-            key = serverKey;
-        }
+    public byte[] encrypt(String data) throws Exception{
         Cipher encrypt = Cipher.getInstance("AES");
-        encrypt.init(Cipher.ENCRYPT_MODE, key);
+        encrypt.init(Cipher.ENCRYPT_MODE, serverKey);
         byte[] encryptedText = encrypt.doFinal(data.getBytes());
         return encryptedText;
     }
 
-    public JSONObject tokenGenerator(String id) throws Exception{
-        JSONObject jo = new JSONObject();
+    public byte[] tokenGenerator(String id) throws Exception{
         String token = "";
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
         LocalDateTime now = LocalDateTime.now();
@@ -100,9 +85,26 @@ public class Authentication implements Serializable{
         now.plusMinutes(10);
         token = token + dtf.format(now) + ":" + id;
 
-        byte[] encryptToken = encrypt(false, token);
-        jo.put("token", encryptToken);
+        return encrypt(token);
+    }
 
-        return jo;
+    public boolean changePass(String id, String oldPass, String newPass) throws Exception {
+        boolean check = checkPass(id, oldPass);
+        if (check) {
+            users.put(id, hashPass(newPass));
+        }
+        return check;
+    }
+
+    private void initializePBKDF2() {
+        SecureRandom random = new SecureRandom();
+        salt = new byte[16];
+        random.nextBytes(salt);
+    }
+
+    private byte[] hashPass(String pass) {
+        KeySpec spec = new PBEKeySpec(pass.toCharArray(), salt, 65536, 128);
+        SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+        return factory.generateSecret(spec).getEncoded();
     }
 }

@@ -95,7 +95,7 @@ function login(){
         var password = "admin";
         if(login === reponse && pass === password){
             //login part
-            window.location.href = "./private.html" + "?User=" + login + "&?token="+token // meter aqui o token
+            window.location.href = "./private.html" + "?User=" + login + "&token="+token // meter aqui o token
         }
         else{
             window.alert("User or password incorrect");
@@ -107,18 +107,12 @@ function loadPrivateArea(){
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     var username = urlParams.get("User")
+    console.log("ai")
+    console.log("user",username)
     var user = document.getElementById("userName");
     var text = document.createTextNode("Hello, " + username);
 
     user.appendChild(text);
-}
-
-function salaryStatus(){
-    //get with token
-    
-    var salary = document.getElementById("salary");
-    var text = document.createTextNode("Salary: " + "10000$");
-    salary.appendChild(text);
 }
 
 
@@ -130,36 +124,54 @@ let abs = [
     { Day: "01-01-2012", Reason: "asdsad"}
 ];
 
-function absentLeaves(){
-    tableCreate("absentLeaves", abs)
-}
-
-function refreshTable(){
-    setInterval('tableCreate("tableSpot",inf)', 500);
-    setInterval('machinesData()', 500);
-}
 
 function logout(){
     window.location.href='./index.html';
 }
 
-function machinesData(){
-    let abs2 = [ 
-        { Day: "01-01-2012", Reason: "Coding"},
-        { Day: "01-01-2012", Reason: "Read"},
-        { Day: "01-01-2012", Reason: "ghh"},
-        { Day: "01-01-2012", Reason: "aasdas"},
-        { Day: "01-01-2012", Reason: "asdsad"}
-    ];
+function loadEmployeeShift(){
+    html = "";
+        obj = {
+            "1" : "Name",
+            "2": "Age",
+            "3" : "Gender"
+        }
+        for(var key in obj) {
+            html += "<option value=" + key  + ">" +obj[key] + "</option>"
+        }
+        document.getElementById("employeeDropTable").innerHTML = html;
+}
 
-    let abs3 = [
-        { name: "Monte Falco", job: "Coding", time: "01:00-02:00", c: Math.floor(Math.random() * 100) },
-        { name: "Monte Falterona", job: "Read", time: "01:00-02:00",  c: Math.floor(Math.random() * 100) },
-        { name: "Poggio Scali", job: "ghh", time: "01:00-02:00", c: Math.floor(Math.random() * 100)},
-        { name: "Pratomagno", job: "aasdas", time: "01:00-02:00",  c: Math.floor(Math.random() * 100) },
-        { name: "Monte Amiata", job: "asdsad", time: "01:00-02:00",  c: Math.floor(Math.random() * 100 ) }
-    ];
+function backPrivate(){
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    var username = urlParams.get("User")
+    var token = urlParams.get("token")
+    window.location.href='./private.html' + "?User=" + username + "&token="+token;
+}
+
+function goCreateShift(){
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+
     
-    console.log([abs2,abs3])
-    tableMachines("machineTable",[abs2,abs3]);
+
+
+    var username = urlParams.get("User")
+    var token = urlParams.get("token")
+    window.location.href='./employeeShift.html'+ "?User=" + username + "&token="+token;
+}
+
+function createEmplyeeShift(){
+    console.log(document.getElementById("employeeDropTable").value)
+    console.log(document.getElementById("fdata").value)
+    console.log(document.getElementById("fduration").value)
+
+    // send request
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    var username = urlParams.get("User")
+    var token = urlParams.get("token")
+    window.location.href='./private.html' + "?User=" + username + "&token="+token;
+
 }

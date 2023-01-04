@@ -37,18 +37,14 @@ public class AuthenticationService {
         out.close();    
     }
 
-    public JSONObject doSomething(String ip, String id, String pass) {
-        JSONObject jsonObj = new JSONObject();
-        if (!auth.checkPass(ip, id, pass)) {
-            // return empty, user or pass not valid!
-            return jsonObj;
+    public byte[] doLogin(String id, String pass) throws Exception {
+        if (!auth.checkPass(id, pass)) {
+            return "Invalid credentials";
         }
+        return auth.tokenGenerator(id);
+    }
 
-        try {
-            jsonObj = auth.tokenGenerator(id);
-        } catch (Exception e) {
-            System.out.println(e.toString());
-        }
-        return jsonObj;
+    public boolean changePass(String id, String oldPass, String newPass) throws Exception {
+        return auth.changePass(id, oldPass, newPass);
     }
 }
