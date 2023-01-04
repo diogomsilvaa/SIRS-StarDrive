@@ -64,7 +64,7 @@ public class AuthStarDriveApplication extends SpringBootServletInitializer imple
 
 		// tests
 		try {
-			byte[] token = authService.doLogin("U0", "password1");
+			String token = authService.doLogin("U0", "password1");
 			System.out.println(token.toString());
 			System.out.println("Login success");
 		} catch (Exception e) {

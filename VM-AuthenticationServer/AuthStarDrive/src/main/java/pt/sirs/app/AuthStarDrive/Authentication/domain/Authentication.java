@@ -10,6 +10,7 @@ import java.io.FileReader;
 import java.io.Serializable;
 import java.security.SecureRandom;
 import java.security.spec.KeySpec;
+import java.nio.charset.StandardCharsets;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -67,14 +68,13 @@ public class Authentication implements Serializable{
         throw new NoPermissionException();
     }
 
-    public byte[] encrypt(String data) throws Exception{
+    private String encrypt(String data) throws Exception{
         Cipher encrypt = Cipher.getInstance("AES");
         encrypt.init(Cipher.ENCRYPT_MODE, serverKey);
-        byte[] encryptedText = encrypt.doFinal(data.getBytes());
-        return encryptedText;
+        return new String(encrypt.doFinal(data.getBytes(StandardCharsets.UTF_8)));
     }
 
-    public byte[] tokenGenerator(String id) throws Exception{
+    public String tokenGenerator(String id) throws Exception{
         String token = "";
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
         LocalDateTime now = LocalDateTime.now();

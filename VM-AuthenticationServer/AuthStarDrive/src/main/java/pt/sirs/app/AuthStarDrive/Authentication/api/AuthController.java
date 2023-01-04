@@ -30,7 +30,7 @@ public class AuthController {
     @CrossOrigin
     @PostMapping("/auth")
     Token requestToken(@RequestBody Map<String, String> body){
-        byte[] token;
+        String token;
         try {
             token = service.doLogin(body.get("id"), body.get("pass"));
         } catch (NoPermissionException e) {
@@ -41,7 +41,7 @@ public class AuthController {
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.valueOf(500));
         }
-        return new Token(token.toString());
+        return new Token(token);
         // return new Token(token.toString());
     }
 

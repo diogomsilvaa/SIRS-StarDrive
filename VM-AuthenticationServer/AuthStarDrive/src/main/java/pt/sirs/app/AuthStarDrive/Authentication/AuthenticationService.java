@@ -33,25 +33,30 @@ public class AuthenticationService {
     }
 
     public void addUser(String id, String pass) throws Exception{
-        
-        auth.addUser(id, pass);
+        auth.addUser(id, pass); 
+        updateSerializable();
+    }
+
+    public String doLogin(String id, String pass) throws Exception {
+        if (!auth.checkPass(id, pass)) {
+            return "Invalid credentials";
+        }
+        return auth.tokenGenerator(id);
+    }
+
+    public boolean changePass(String id, String oldPass, String newPass) throws Exception {
+        boolean check = auth.changePass(id, oldPass, newPass);
+        updateSerializable();
+        return check;
+    }
+
+    private void updateSerializable() {
         File file = new File("Serializable.txt");
         file.createNewFile();
         FileOutputStream fout = new FileOutputStream(file, false);    
         ObjectOutputStream out = new ObjectOutputStream(fout);    
         out.writeObject(auth);    
         out.flush();    
-        out.close();    
-    }
-
-    public byte[] doLogin(String id, String pass) throws Exception {
-        if (!auth.checkPass(id, pass)) {
-            return "Invalid credentials".getBytes();
-        }
-        return auth.tokenGenerator(id);
-    }
-
-    public boolean changePass(String id, String oldPass, String newPass) throws Exception {
-        return auth.changePass(id, oldPass, newPass);
+        out.close();   
     }
 }
