@@ -29,7 +29,6 @@ public class AssemblyLine {
     public AssemblyLine(){
         assemblersIDs = new ArrayList<String>();
         setId("L" + seqNum);
-        seqNum++;
     }
 
     public String getId() {
@@ -37,6 +36,7 @@ public class AssemblyLine {
     }
 
     public void setId(String id) {
+        seqNum++;
         this.id = id;
     }
     public float getProductionRate() {
