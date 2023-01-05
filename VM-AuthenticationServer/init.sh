@@ -2,7 +2,7 @@ sudo apt update
 sudo apt upgrade
 sudo apt autoremove
 
-cat toBash.txt >> ~/.bashrc
+cat tobash.txt >> ~/.bashrc
 source ~/.bashrc	
 
 sudo apt install openjdk-17-jdk
