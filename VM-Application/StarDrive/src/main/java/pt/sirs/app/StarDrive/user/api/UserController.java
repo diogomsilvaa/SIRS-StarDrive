@@ -1,5 +1,6 @@
 package pt.sirs.app.StarDrive.user.api;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeoutException;
@@ -16,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 import pt.sirs.app.StarDrive.auth.AuthService;
 import pt.sirs.app.StarDrive.user.UserService;
 import pt.sirs.app.StarDrive.user.domain.User;
+import pt.sirs.app.StarDrive.user.domain.User.Role;
 
 @RestController
 @RequestMapping("/user")
@@ -91,7 +93,33 @@ public class UserController {
         }
         User user = userService.getUser(auth.getId());
         if(user.getRole() != User.Role.ENGINEER) throw new ResponseStatusException(HttpStatusCode.valueOf(403));
-        return userService.getUsers();
+
+        List<User> employees = new ArrayList<User>();
+
+        for(User u : userService.getUsers()){
+            if(u.getRole() == Role.EMPLOYEE){
+                employees.add(u);
+            }
+        }
+
+        return employees;
     }
 
+
+    @CrossOrigin
+    @PostMapping("/changeSalary")
+    void changeSalary(@RequestBody Map<String, String> body){
+        AuthService auth = new AuthService(body.get("token"));
+        try {
+            auth.verifyToken();
+        } catch (TimeoutException e) {
+            throw new ResponseStatusException(HttpStatusCode.valueOf(408));
+        } catch (Exception e){
+            throw new ResponseStatusException(HttpStatusCode.valueOf(500));
+        }
+        User user = userService.getUser(auth.getId());
+        if(user.getRole() != User.Role.ENGINEER) throw new ResponseStatusException(HttpStatusCode.valueOf(403));
+        
+        userService.changeSalary(body.get("id"), Double.parseDouble(body.get("salary")));
+    }
 }

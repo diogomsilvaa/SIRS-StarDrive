@@ -145,7 +145,7 @@ function loadPrivateArea(){
             
         }); 
 
-    fetch("http://localhost:8080/user/getUser",{
+    fetch("http://localhost:8080/user/getEmployees",{
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -161,10 +161,8 @@ function loadPrivateArea(){
         }
         response.json().then((data) => {
             console.log(data)
-
-            var user = document.getElementById("userName");
-            var text = document.createTextNode("Hell Engineer, " + data["name"]);
-            user.appendChild(text);
+            var table = document.getElementById("tableSpot");
+            table.appendChild(tableGen(data))
         })
 
         
@@ -172,8 +170,7 @@ function loadPrivateArea(){
 
    
 
-    var table = document.getElementById("tableSpot");
-    table.appendChild(tableGen(employees))
+    
 
 }
 
@@ -184,16 +181,76 @@ function logout(){
 }
 
 function loadEmployees(){
-    html = "";
-        obj = {
-            "1" : "Name",
-            "2": "Age",
-            "3" : "Gender"
+    data = {token: getCookie("token")}
+
+    fetch("http://localhost:8080/user/getEmployees",{
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: JSON.stringify(data) // body data type must match "Content-Type" header
+    }).then((response) => {
+        // http status
+        if(!response.ok){
+            window.alert("Error");
+            logout();
+            return;
         }
-        for(var key in obj) {
-            html += "<option value=" + key  + ">" +obj[key] + "</option>"
+        response.json().then((data) => {
+            console.log(data)
+            let json = data;
+            for(var x in json){
+                delete (json[x]["salary"])
+                delete (json[x]["creationDate"])
+                delete (json[x]["role"])
+                delete (json[x]["shiftsIDs"])
+                delete (json[x]["absentDays"])
+                console.log(json[x])
+            }
+            console.log(json)
+            html = "";
+            for(var key in json) {
+                html += "<option value=" +json[key]["id"]  + ">" + json[key]["id"] + " - " + json[key]["name"] + "</option>"
+            }
+            
+            document.getElementById("employeeDropTable").innerHTML = html;
+            //table.appendChild(tableGen(data))
+
+        })
+
+        
+    });
+}
+function goChangeEmployee(){
+    window.location.href='./employeeChange.html'
+}
+
+function employeeChange(){
+    data = {token : getCookie("token"), id : document.getElementById("employeeDropTable").value, salary : document.getElementById("fsalary").value}
+
+    fetch("http://localhost:8080/user/changeSalary",{
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: JSON.stringify(data) // body data type must match "Content-Type" header
+    }).then((response) => {
+        // http status
+        if(!response.ok){
+            window.alert("Error");
+            //logout();
+            return;
         }
-        document.getElementById("employeeDropTable").innerHTML = html;
+
+    });
+
+            
+    // send request
+    
+    window.location.href='./private.html' 
+
 }
 
 function backPrivate(){
@@ -216,37 +273,6 @@ function goCreateShift(){
     window.location.href='./employeeShift.html'+ "?User=" + username + "&token="+token;
 }
 
-function goChangeEmployee(){
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    var username = urlParams.get("User")
-    var token = urlParams.get("token")
-    window.location.href='./employeeChange.html'+ "?User=" + username + "&token="+token;
-}
 
-function createEmployeeShift(){
-    console.log(document.getElementById("employeeDropTable").value)
-    console.log(document.getElementById("fdata").value)
-    console.log(document.getElementById("fduration").value)
 
-    // send request
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    var username = urlParams.get("User")
-    var token = urlParams.get("token")
-    window.location.href='./private.html' + "?User=" + username + "&token="+token;
 
-}
-
-function changeEmployee(){
-    console.log(document.getElementById("fid").value)
-    console.log(document.getElementById("fpass").value)
-    console.log(document.getElementById("fpass").value)
-    //send request
-
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    var username = urlParams.get("User")
-    var token = urlParams.get("token")
-    window.location.href='./private.html' + "?User=" + username + "&token="+token;
-}

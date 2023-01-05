@@ -12,19 +12,17 @@
 <body>
     <div>
         <h1>Industry: StarDrive, BackOffice</h1>
-        <h3>Employee Change</h3>
+        <h3>Employee Edit</h3>
 
         <body onload="loadEmployees()"></body>
         <label  for="employeeDropTable">Employee:</label>
         <select name="Emplyee" id="employeeDropTable"></select>
-        <label for="fid">Salary:</label>
-        <input type="text" id="fid" name="fid">
-        <label for="fpass">Password:</label>
-        <input type="password" id="fpass" name="fpass">
+        <label for="fsalary">Salary:</label>
+        <input type="text" id="fsalary" name="fsalary">
         <br><br>
         
 
-        <button onClick ="createEmployee()">Create</button>
+        <button onClick ="employeeChange()">Save</button>
         
         <button onClick="backPrivate()">Back</button>
         <button onClick="logout()">Logout</button>

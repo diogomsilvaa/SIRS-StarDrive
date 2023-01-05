@@ -59,5 +59,11 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public void changeSalary(String employeeId, double salary){
+        User user = userRepository.findById(employeeId).get();
+
+        user.setSalary(salary);
+        userRepository.save(user);
+    }
 
 }
