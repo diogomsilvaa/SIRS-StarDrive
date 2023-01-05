@@ -5,6 +5,7 @@ import java.util.concurrent.TimeoutException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,7 +17,6 @@ import pt.sirs.app.StarDrive.auth.AuthService;
 import pt.sirs.app.StarDrive.production.ProductionService;
 import pt.sirs.app.StarDrive.production.domain.Assembler;
 import pt.sirs.app.StarDrive.production.domain.AssemblyLine;
-import pt.sirs.app.StarDrive.production.repo.LinesRepository;
 import pt.sirs.app.StarDrive.user.UserService;
 import pt.sirs.app.StarDrive.user.domain.User;
 
@@ -29,7 +29,8 @@ public class ProductionController {
 
     @Autowired
     ProductionService productionService;
-
+    
+    @CrossOrigin
     @PostMapping("/createLine")
     AssemblyLine createAssemblyLine(@RequestBody Map<String, String> body){
         AuthService auth = new AuthService(body.get("token"));
@@ -46,6 +47,7 @@ public class ProductionController {
         return newLine;
     }
 
+    @CrossOrigin
     @PostMapping("/addAssembler")
     AssemblyLine addAssembler(@RequestBody Map<String, String> body){
         AuthService auth = new AuthService(body.get("token"));
@@ -63,6 +65,7 @@ public class ProductionController {
         return line;
     }
 
+    @CrossOrigin
     @PostMapping("/createAssembler")
     Assembler createAssembler(@RequestBody Map<String, String> body){
         AuthService auth = new AuthService(body.get("token"));
@@ -80,6 +83,7 @@ public class ProductionController {
         return newAssembler;
     }
 
+    @CrossOrigin
     @PostMapping("/startLine")
     AssemblyLine startLine(@RequestBody Map<String, String> body){
 
@@ -98,6 +102,7 @@ public class ProductionController {
         return line;
     }
 
+    @CrossOrigin
     @PutMapping("/updateLine")
     AssemblyLine updateLine(@RequestBody Map<String, String> body){
 
