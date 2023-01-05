@@ -42,6 +42,7 @@ public class UserController {
         if(user == null) throw new ResponseStatusException(HttpStatusCode.valueOf(404));
     }
 
+    @CrossOrigin
     @PostMapping("/loginBack")
     void loginBack(@RequestBody Map<String, String> body){
         AuthService auth = new AuthService(body.get("token"));
@@ -60,7 +61,8 @@ public class UserController {
         if(user.getRole() != User.Role.ENGINEER) throw new ResponseStatusException(HttpStatusCode.valueOf(403));
     }
 
-    @GetMapping("/getUser")
+    @CrossOrigin
+    @PostMapping("/getUser")
     User getUser(@RequestBody Map<String, String> body){
         AuthService auth = new AuthService(body.get("token"));
         try {

@@ -110,62 +110,91 @@ function login(){
 
             response.json().then((data) => {
                 token = data['content']
-                window.location.href = "./private.html" + "?token=" + token // meter aqui o token
                 
+                fetch("http://localhost:8080/user/loginFront",{
+                    method: 'Post',
+                    headers: {
+                        'Content-Type': 'application/json'
+                        // 'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: JSON.stringify({ token: token, id: login}) // body data type must match "Content-Type" header
+                }).then((response) => {
+                    // http status
+                    if(!response.ok){
+                        window.alert("Error");
+                        window.location.href = "./index.html";
+                        return;
+                    }
+                        
+                    window.location.href = "./private.html"  
+                    document.cookie = "token="+token+"; path=/"
+                    
+                });
             })
 
         })   
 
-        console.log(token)
-        // fetch("https://192.168.0.1:8080/loginFront",{
-        //     method: 'GET',
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //         // 'Content-Type': 'application/x-www-form-urlencoded',
-        //     },
-        //     body: JSON.stringify({ token: token, id: login}) // body data type must match "Content-Type" header
-        // }).then((response) => {
-        //     // http status
-        //     if(!response.ok)
-        //         window.alert("Error");
-        //         window.location.href = "./index.html";
-        //         return;
-        // });
+        
 
 
 
     }  
 }
 
+function getCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i < ca.length;i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    }
+    return null;
+}
+
 function loadPrivateArea(){
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
-    var token = urlParams.get("token")
+    //var token = urlParams.get("token")
 
-    fetch("https://localhost:8080/loginFront",{
-            method: 'GET',
+    console.log(  getCookie("token"))
+    data = {token: getCookie("token")}
+    console.log(data)
+    fetch("http://localhost:8080/user/getUser",{
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
                 // 'Content-Type': 'application/x-www-form-urlencoded',
             },
-            body: JSON.stringify({ token: token}) // body data type must match "Content-Type" header
+            body: JSON.stringify(data) // body data type must match "Content-Type" header
         }).then((response) => {
             // http status
-            if(!response.ok)
+            if(!response.ok){
                 window.alert("Error");
                 window.location.href = "./index.html";
                 return;
-        }).then((data) => {
-            user = data
-        }); 
-    var user = document.getElementById("userName");
-    var text = document.createTextNode("Hello, " + user["name"]);
-    user.appendChild(text);
-    
+            }
+            response.json().then((data) => {
+                console.log(data)
 
-    var salary = document.getElementById("salary");
-    var text = document.createTextNode(user["salary"]);
-    salary.appendChild(text);
+                var user = document.getElementById("userName");
+                var text = document.createTextNode("Hello, " + data["name"]);
+                user.appendChild(text);
+                
+
+                var salary = document.getElementById("salary");
+                var text = document.createTextNode(data["salary"] + "$ /month");
+                salary.appendChild(text);
+
+                var job = document.getElementById("job");
+                var text = document.createTextNode(data["role"]);
+                job.appendChild(text);
+            })
+
+            
+        }); 
+
+    
 }
 
 
@@ -184,26 +213,27 @@ function absentLeaves(){
 function refreshTable(){
     
 
-    fetch("http://localhost:8080/production/createLine",{
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-                // 'Content-Type': 'application/x-www-form-urlencoded',
-            }
-        }).then((response) => {
-            // http status
-            if(!response.ok)
-                window.alert("Error");
-                //window.location.href = "./index.html";
-                return;
-        }).then((data) => {
-            console.log(data)
-        });     
+    // fetch("http://localhost:8080/production/createLine",{
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/json'
+    //             // 'Content-Type': 'application/x-www-form-urlencoded',
+    //         }
+    //     }).then((response) => {
+    //         // http status
+    //         if(!response.ok)
+    //             window.alert("Error");
+    //             //window.location.href = "./index.html";
+    //             return;
+    //     }).then((data) => {
+    //         console.log(data)
+    //     });     
     setInterval('tableCreate("tableSpot",inf)', 500);
     setInterval('machinesData()', 500);
 }
 
 function logout(){
+    document.cookie = "token=; path=/"
     window.location.href='./index.html';
 }
 

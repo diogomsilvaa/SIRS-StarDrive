@@ -11,16 +11,19 @@
 <body>
     <div>
         <h1>Private page</h1>
-        <a onload="loadPrivateArea()"/>
+        <body onload="loadPrivateArea()"/>
         <h2 id='userName'></h2>
         <h3>Job Status</h3>
         <h4 id='job'></h4>
-        <section>
-            <h3>Absent Days</h3>
-            <body onload="absentLeaves()"></body> 
-            <h6 id = "absentLeaves"></h6>
-            <h2 id = 'salary'></h2>  
-               
+ 
+        <h3>Absent Days</h3>
+        <!-- <body onload="absentLeaves()"></body>  -->
+        <h6 id = "absentLeaves"></h6>
+        <br>  
+        <h3>Salary</h3>
+        <h4 id = 'salary'></h4>  
+        
+        <br>
         <button onClick="window.location.reload();">Refresh</button>
         <button onClick="logout()">Logout</button>
     </div>

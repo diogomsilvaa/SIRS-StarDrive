@@ -8,6 +8,8 @@ import java.util.concurrent.TimeoutException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,6 +33,7 @@ public class ShiftManagerController {
     @Autowired
     UserService userService;
 
+    @CrossOrigin
     @PostMapping("/create")
     Shift createShift(@RequestBody Map<String, String> body) {
         AuthService auth = new AuthService(body.get("token"));
@@ -50,6 +53,7 @@ public class ShiftManagerController {
         return newShift;
     }
 
+    @CrossOrigin
     @PutMapping("/addEmployee")
     Shift addEmployee(@RequestBody Map<String, String> body) {
         //só um engineer é que consegue adicionar um employee a um shift
@@ -75,6 +79,8 @@ public class ShiftManagerController {
         return newShift;
     }
 
+    @CrossOrigin
+    @GetMapping("/get")
     Shift[] getShifts(@RequestBody Map<String, String> body) {
         return shiftManagerService.getShifts();
     }
