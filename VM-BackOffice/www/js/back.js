@@ -1,32 +1,3 @@
-// function clickMe() {
-//     var header = document.getElementById("title");
-//     header.innerHTML = "po crlh";
-// }
-
-// var button = document.getElementById("but");
-// button.addEventListener("click", clickMe);
-
-// fetch data from random api
-function fetchRandom() {
-    fetch("https://randomuser.me/api/")
-        .then(response => response.json())
-        .then(data => {
-            var user = data.results[0];
-            var name = user.name.first + " " + user.name.last;
-            var email = user.email;
-            var phone = user.phone;
-            var image = user.picture.large;
-
-            document.getElementById("name").innerHTML = name;
-            document.getElementById("email").innerHTML = email;
-            document.getElementById("phone").innerHTML = phone;
-            document.getElementById("image").src = image;
-        });
-    }
-
-
-    
-
 let inf = [
     { name: "Monte Falco", job: "Coding", time: "01:00-02:00", c: Math.floor(Math.random() * 100) },
     { name: "Monte Falterona", job: "Read", time: "01:00-02:00",  c: Math.floor(Math.random() * 100) },
@@ -74,51 +45,141 @@ function tableGen(data){
     return table;
 }
 
+function getCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i < ca.length;i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    }
+    return null;
+}
 
 function login(){
          
     var login = prompt("Username");
-    var reponse = "admin";
 
     parBis();
 
-    function parBis(){
-        var token = "aaa"
+    async function parBis(){
+        var token = ""
         var pass = prompt("Password");
-        var password = "admin";
-        if(login === reponse && pass === password){
-            //login part
-            window.location.href = "./private.html" + "?User=" + login + "&token="+token // meter aqui o token
-        }
-        else{
-            window.alert("User or password incorrect");
-        }
+
+        data = {id: login, pass: pass}
+
+        fetch("http://localhost:8081/auth",{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data) // body data type must match "Content-Type" header
+        }).then((response) => {
+            // http status
+            if(!response.ok){
+                window.alert("Error");
+                window.location.href = "./index.html";
+                return;
+            }
+
+            response.json().then((data) => {
+                token = data['content']
+                
+                fetch("http://localhost:8080/user/loginBack",{
+                    method: 'Post',
+                    headers: {
+                        'Content-Type': 'application/json'
+                        // 'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: JSON.stringify({ token: token, id: login}) // body data type must match "Content-Type" header
+                }).then((response) => {
+                    // http status
+                    if(!response.ok){
+                        window.alert("Error");
+                        window.location.href = "./index.html";
+                        return;
+                    }
+                        
+                    window.location.href = "./private.html"  
+                    document.cookie = "token="+token+"; path=/"
+                    
+                });
+            })
+
+        })   
     }  
 }
+
 
 let employees = [
     { Name: "Carlos", Salary: "1231231"},
     { Name: "Diogo", Salary: "1231231"},
     { Name: "Miguel", Salary: "1231231"}
 ];
-function loadPrivateArea(){
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    var username = urlParams.get("User")
-    var user = document.getElementById("userName");
-    var text = document.createTextNode("Hello, " + username);
 
-    user.appendChild(text);
+function loadPrivateArea(){
+    data = {token: getCookie("token")}
+
+    fetch("http://localhost:8080/user/getUser",{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: JSON.stringify(data) // body data type must match "Content-Type" header
+        }).then((response) => {
+            // http status
+            if(!response.ok){
+                window.alert("Error");
+                logout();
+                return;
+            }
+            response.json().then((data) => {
+                console.log(data)
+
+                var user = document.getElementById("userName");
+                var text = document.createTextNode("Hell Engineer, " + data["name"]);
+                user.appendChild(text);
+            })
+
+            
+        }); 
+
+    fetch("http://localhost:8080/user/getUser",{
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: JSON.stringify(data) // body data type must match "Content-Type" header
+    }).then((response) => {
+        // http status
+        if(!response.ok){
+            window.alert("Error");
+            logout();
+            return;
+        }
+        response.json().then((data) => {
+            console.log(data)
+
+            var user = document.getElementById("userName");
+            var text = document.createTextNode("Hell Engineer, " + data["name"]);
+            user.appendChild(text);
+        })
+
+        
+    });
+
+   
+
     var table = document.getElementById("tableSpot");
     table.appendChild(tableGen(employees))
 
 }
 
 
-
-
-
 function logout(){
+    document.cookie = "token=; path=/"
     window.location.href='./index.html';
 }
 

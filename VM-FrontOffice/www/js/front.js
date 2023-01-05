@@ -1,11 +1,3 @@
-let inf = [
-    { name: "Monte Falco", job: "Coding", time: "01:00-02:00", c: Math.floor(Math.random() * 100) },
-    { name: "Monte Falterona", job: "Read", time: "01:00-02:00",  c: Math.floor(Math.random() * 100) },
-    { name: "Poggio Scali", job: "ghh", time: "01:00-02:00", c: Math.floor(Math.random() * 100)},
-    { name: "Pratomagno", job: "aasdas", time: "01:00-02:00",  c: Math.floor(Math.random() * 100) },
-    { name: "Monte Amiata", job: "asdsad", time: "01:00-02:00",  c: Math.floor(Math.random() * 100 ) }
-];
-
 function tableCreate(id, info) {
     const divShowData = document.getElementById(id);
     divShowData.innerHTML = "";
@@ -113,13 +105,9 @@ function getCookie(name) {
 }
 
 function loadPrivateArea(){
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    //var token = urlParams.get("token")
 
-    // console.log(  getCookie("token"))
-    // data = {token: getCookie("token")}
-    // console.log(data)
+    data = {token: getCookie("token")}
+
     fetch("http://localhost:8080/user/getUser",{
             method: 'POST',
             headers: {
@@ -131,7 +119,7 @@ function loadPrivateArea(){
             // http status
             if(!response.ok){
                 window.alert("Error");
-                window.location.href = "./index.html";
+                logout();
                 return;
             }
             response.json().then((data) => {
@@ -196,7 +184,6 @@ function refreshTable(){
             // http status
             if(!response.ok){
                 window.alert("Error");
-                //window.location.href = "./index.html";
                 return;
             }
                 
@@ -223,7 +210,6 @@ function asseblyLinesTable(){
             // http status
             if(!response.ok){
                 window.alert("Error");
-                //window.location.href = "./index.html";
                 return;
             }
                 
@@ -232,6 +218,8 @@ function asseblyLinesTable(){
                 divShowData.innerHTML = "";
 
                 divShowData.appendChild(tableGen(data));
+
+                console.log(data);
     
             })
         });
