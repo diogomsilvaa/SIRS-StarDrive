@@ -7,25 +7,7 @@
 // button.addEventListener("click", clickMe);
 
 // fetch data from random api
-function fetchRandom() {
-    fetch("https://randomuser.me/api/")
-        .then(response => response.json())
-        .then(data => {
-            var user = data.results[0];
-            var name = user.name.first + " " + user.name.last;
-            var email = user.email;
-            var phone = user.phone;
-            var image = user.picture.large;
-
-            document.getElementById("name").innerHTML = name;
-            document.getElementById("email").innerHTML = email;
-            document.getElementById("phone").innerHTML = phone;
-            document.getElementById("image").src = image;
-        });
-    }
-
-
-    
+   
 
 let inf = [
     { name: "Monte Falco", job: "Coding", time: "01:00-02:00", c: Math.floor(Math.random() * 100) },
