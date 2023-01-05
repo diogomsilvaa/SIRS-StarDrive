@@ -37,6 +37,7 @@ public class User {
         setRole(role);
         setSalary(salary);
         shiftsIDs = new ArrayList<String>();
+        absentDays = new ArrayList<String>();
     }
 
     public void setId(String id) {

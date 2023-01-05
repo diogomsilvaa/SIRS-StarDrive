@@ -189,6 +189,28 @@ function loadPrivateArea(){
                 var job = document.getElementById("job");
                 var text = document.createTextNode(data["role"]);
                 job.appendChild(text);
+
+
+                if(data["absentDays"].length > 0){
+                    var absentLeaves = document.getElementById("absentLeaves");
+                    absentLeaves.appendChild(tableGen(data["absentDays"]));
+                }
+                else{
+                    var absentLeaves = document.getElementById("absentLeaves");
+                    var text = document.createTextNode("No absent days!")
+                    absentLeaves.appendChild(text);
+                }
+                
+                if(data["shiftsIDs"].length > 0){
+                    var shifts = document.getElementById("shifts");
+                    shifts.appendChild(tableGen(data["shiftsIDs"]));
+                }
+                else{
+                    var shifts = document.getElementById("shifts");
+                    var text = document.createTextNode("No shifts!")
+                    shifts.appendChild(text);
+                }
+                
             })
 
             
@@ -213,21 +235,17 @@ function absentLeaves(){
 function refreshTable(){
     
 
-    // fetch("http://localhost:8080/production/createLine",{
-    //         method: 'POST',
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //             // 'Content-Type': 'application/x-www-form-urlencoded',
-    //         }
-    //     }).then((response) => {
-    //         // http status
-    //         if(!response.ok)
-    //             window.alert("Error");
-    //             //window.location.href = "./index.html";
-    //             return;
-    //     }).then((data) => {
-    //         console.log(data)
-    //     });     
+    fetch("http://localhost:8080/shift/get",{
+            method: 'GET',
+        }).then((response) => {
+            // http status
+            if(!response.ok)
+                window.alert("Error");
+                //window.location.href = "./index.html";
+                return;
+        }).then((data) => {
+            console.log(data)
+        });     
     setInterval('tableCreate("tableSpot",inf)', 500);
     setInterval('machinesData()', 500);
 }

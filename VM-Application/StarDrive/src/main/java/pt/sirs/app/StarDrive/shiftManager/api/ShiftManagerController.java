@@ -81,7 +81,7 @@ public class ShiftManagerController {
 
     @CrossOrigin
     @GetMapping("/get")
-    Shift[] getShifts(@RequestBody Map<String, String> body) {
+    Shift[] getShifts() {
         return shiftManagerService.getShifts();
     }
 }
