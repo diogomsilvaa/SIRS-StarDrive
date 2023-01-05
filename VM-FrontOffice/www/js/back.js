@@ -94,7 +94,7 @@ function login(){
 
         data = {id: login, pass: pass}
 
-        fetch("https://localhost:8080/auth",{
+        fetch("http://localhost:8081/auth",{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -104,16 +104,19 @@ function login(){
             // http status
             if(!response.ok){
                 window.alert("Error");
-                //window.location.href = "./index.html";
+                window.location.href = "./index.html";
                 return;
             }
 
             response.json().then((data) => {
-                console.log(data)
+                token = data['content']
+                window.location.href = "./private.html" + "?token=" + token // meter aqui o token
+                
             })
 
         })   
-        
+
+        console.log(token)
         // fetch("https://192.168.0.1:8080/loginFront",{
         //     method: 'GET',
         //     headers: {
@@ -130,7 +133,6 @@ function login(){
         // });
 
 
-        // window.location.href = "./private.html" + "?token=" + token // meter aqui o token
 
     }  
 }
@@ -140,7 +142,7 @@ function loadPrivateArea(){
     const urlParams = new URLSearchParams(queryString);
     var token = urlParams.get("token")
 
-    fetch("https://192.168.0.1:8080/loginFront",{
+    fetch("https://localhost:8080/loginFront",{
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -180,6 +182,23 @@ function absentLeaves(){
 }
 
 function refreshTable(){
+    
+
+    fetch("http://localhost:8080/production/createLine",{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            }
+        }).then((response) => {
+            // http status
+            if(!response.ok)
+                window.alert("Error");
+                //window.location.href = "./index.html";
+                return;
+        }).then((data) => {
+            console.log(data)
+        });     
     setInterval('tableCreate("tableSpot",inf)', 500);
     setInterval('machinesData()', 500);
 }
