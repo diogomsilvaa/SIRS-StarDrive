@@ -1,5 +1,5 @@
 **Machine:** Application
-**OS:** Debian
+**OS:** Ubuntu 20
 **Description:**
 
 ## Configure
@@ -67,13 +67,6 @@ echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb
 sudo apt-get update
 sudo apt-get install mongodb-org=4.4.8 mongodb-org-server=4.4.8 mongodb-org-shell=4.4.8 mongodb-org-mongos=4.4.8 mongodb-org-tools=4.4.
 sudo systemctl start mongod
-```
-
-Enter mongo shell and init a database in port 27017
-
-```
-mongo
-> use StartDriveDB
 ```
 
 ### Set up TLS Key
