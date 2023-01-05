@@ -49,4 +49,8 @@ public class ShiftManagerService {
         shiftRepository.save(shift);
         return shift;
     }
+
+    public Shift[] getShifts(){
+        return shiftRepository.findAll().toArray(new Shift[0]);
+    }
 }

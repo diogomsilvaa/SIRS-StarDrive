@@ -25,6 +25,7 @@ public class User {
     private LocalDateTime creationDate;
     private Role role;
     private ArrayList<String> shiftsIDs;
+    private ArrayList<String> absentDays;
 
 
     public User(){}
@@ -88,5 +89,13 @@ public class User {
     
     public ArrayList<String> getShiftsIDs() {
         return shiftsIDs;
+    }
+
+    public void addAbsentDay(String date){
+        absentDays.add(date); // format: yyyy/MM/dd
+    }
+
+    public ArrayList<String> getAbsentDays() {
+        return absentDays;
     }
 }

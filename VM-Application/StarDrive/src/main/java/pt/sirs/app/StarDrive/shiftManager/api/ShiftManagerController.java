@@ -2,19 +2,24 @@ package pt.sirs.app.StarDrive.shiftManager.api;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Map;
+import java.util.concurrent.TimeoutException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import pt.sirs.app.StarDrive.auth.AuthService;
 import pt.sirs.app.StarDrive.shiftManager.ShiftManagerService;
 import pt.sirs.app.StarDrive.shiftManager.domain.Shift;
+import pt.sirs.app.StarDrive.user.UserService;
+import pt.sirs.app.StarDrive.user.domain.User;
 
 @RestController
 @RequestMapping("/shift")
@@ -23,26 +28,54 @@ public class ShiftManagerController {
     @Autowired
     ShiftManagerService shiftManagerService;
 
+    @Autowired
+    UserService userService;
+
     @PostMapping("/create")
-    Shift createShift(@RequestParam String token, @RequestParam String start, @RequestParam long duration) {
-        //só um engineer é que consegue criar um shift
-        //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-        //LocalDateTime startDateTime = LocalDateTime.parse(start, formatter);
-        //LocalDateTime endDateTime = startDateTime.plusMinutes(duration);
-        //Shift newShift = shiftManagerService.createShift(startDateTime, endDateTime);
-        Shift newShift = shiftManagerService.createShift(LocalDateTime.now(), LocalDateTime.now().plusMinutes(duration));
+    Shift createShift(@RequestBody Map<String, String> body) {
+        AuthService auth = new AuthService(body.get("token"));
+        try {
+            auth.verifyToken();
+        } catch (TimeoutException e) {
+            throw new ResponseStatusException(HttpStatusCode.valueOf(408));
+        } catch (Exception e){
+            throw new ResponseStatusException(HttpStatusCode.valueOf(500));
+        }
+        User user = userService.getUser(auth.getId());
+        if(user.getRole() != User.Role.ENGINEER) throw new ResponseStatusException(HttpStatusCode.valueOf(403));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        LocalDateTime startDateTime = LocalDateTime.parse(body.get("start"), formatter);
+        LocalDateTime endDateTime = startDateTime.plusMinutes(Long.parseLong(body.get("duration")));
+        Shift newShift = shiftManagerService.createShift(startDateTime, endDateTime);
         return newShift;
     }
 
     @PutMapping("/addEmployee")
-    Shift addEmployee(@RequestParam String token, @RequestParam String shiftId, @RequestParam String employeeId) {
+    Shift addEmployee(@RequestBody Map<String, String> body) {
         //só um engineer é que consegue adicionar um employee a um shift
         Shift newShift = null;
+        AuthService auth = new AuthService(body.get("token"));
         try {
-            newShift = shiftManagerService.addEmployee(shiftId, employeeId);
+            auth.verifyToken();
+        } catch (TimeoutException e) {
+            throw new ResponseStatusException(HttpStatusCode.valueOf(408));
+        } catch (Exception e){
+            throw new ResponseStatusException(HttpStatusCode.valueOf(500));
+        }
+        User user = userService.getUser(auth.getId());
+        if(user.getRole() != User.Role.ENGINEER) throw new ResponseStatusException(HttpStatusCode.valueOf(403));
+
+        try {
+            newShift = shiftManagerService.addEmployee(body.get("shiftId"), body.get("employeeId"));
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE);
         }
+
+
         return newShift;
-    }    
+    }
+
+    Shift[] getShifts(@RequestBody Map<String, String> body) {
+        return shiftManagerService.getShifts();
+    }
 }
