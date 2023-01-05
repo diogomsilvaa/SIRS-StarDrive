@@ -1,14 +1,3 @@
-// function clickMe() {
-//     var header = document.getElementById("title");
-//     header.innerHTML = "po crlh";
-// }
-
-// var button = document.getElementById("but");
-// button.addEventListener("click", clickMe);
-
-// fetch data from random api
-   
-
 let inf = [
     { name: "Monte Falco", job: "Coding", time: "01:00-02:00", c: Math.floor(Math.random() * 100) },
     { name: "Monte Falterona", job: "Read", time: "01:00-02:00",  c: Math.floor(Math.random() * 100) },
@@ -136,9 +125,9 @@ function loadPrivateArea(){
     const urlParams = new URLSearchParams(queryString);
     //var token = urlParams.get("token")
 
-    console.log(  getCookie("token"))
-    data = {token: getCookie("token")}
-    console.log(data)
+    // console.log(  getCookie("token"))
+    // data = {token: getCookie("token")}
+    // console.log(data)
     fetch("http://localhost:8080/user/getUser",{
             method: 'POST',
             headers: {
@@ -180,9 +169,6 @@ function loadPrivateArea(){
                         p.appendChild(document.createTextNode(data["absentDays"][key]));
                         p.appendChild(document.createElement("br"));
                     }
-                    
-
-                    //absentLeaves.appendChild(tableGen(data["absentDays"]));
                 }
                 else{
                     var absentLeaves = document.getElementById("absentLeaves");
@@ -216,14 +202,18 @@ function refreshTable(){
             method: 'GET',
         }).then((response) => {
             // http status
-            if(!response.ok)
+            if(!response.ok){
                 window.alert("Error");
                 //window.location.href = "./index.html";
                 return;
-        }).then((data) => {
-            console.log(data)
+            }
+                
+            response.json().then((data) => {
+
+                tableCreate("tableSpot",data)
+            })
         });     
-    setInterval('tableCreate("tableSpot",inf)', 500);
+
     setInterval('machinesData()', 500);
 }
 
