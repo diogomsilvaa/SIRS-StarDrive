@@ -22,6 +22,7 @@ public class ProductionService {
     private ArrayList<Assembler> assemblers;
 
     public static int assemblersNum = 0;
+    public static int linesNum = 0;
 
     
     public ProductionService(){
@@ -29,7 +30,8 @@ public class ProductionService {
     }
 
     public AssemblyLine createAssemblyLine(){
-        AssemblyLine line = new AssemblyLine();
+        AssemblyLine line = new AssemblyLine(linesNum);
+        linesNum++;
         linesRepository.save(line);
         return line;
     }

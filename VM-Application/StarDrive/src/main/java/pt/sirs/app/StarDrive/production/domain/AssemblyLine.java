@@ -17,8 +17,6 @@ public class AssemblyLine {
     private String startDate = null;
     private String endDate = null;
 
-    @Transient
-    private static int seqNum = 0;
 
     private ArrayList<String> assemblersIDs;
 
@@ -26,7 +24,7 @@ public class AssemblyLine {
     private ArrayList<Assembler> assemblers;
     
 
-    public AssemblyLine(){
+    public AssemblyLine(int seqNum){
         assemblersIDs = new ArrayList<String>();
         setId("L" + seqNum);
     }
@@ -36,7 +34,6 @@ public class AssemblyLine {
     }
 
     public void setId(String id) {
-        seqNum++;
         this.id = id;
     }
     public float getProductionRate() {
@@ -56,9 +53,6 @@ public class AssemblyLine {
     }
     public void setEndDate(String endDate) {
         this.endDate = endDate;
-    }
-    public int getSeqNum() {
-        return seqNum;
     }
     
     public void setOnProduction(boolean onProduction) {
