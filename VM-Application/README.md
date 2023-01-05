@@ -84,6 +84,8 @@ keytool -genkeypair -alias baeldung -keyalg RSA -keysize 4096 \
   -storeType PKCS12 -storepass changeit
 ```
 
+change on application.properties tha path to the key
+
 ## Network
 In ORACLE go to setting->network and then:
 1. In adapter 1 make sure it´s attached to internal network with the name sw-2 and generate new MAC address
