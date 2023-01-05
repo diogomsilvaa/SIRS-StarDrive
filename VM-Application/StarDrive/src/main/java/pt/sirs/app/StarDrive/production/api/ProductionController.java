@@ -6,6 +6,7 @@ import java.util.concurrent.TimeoutException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,6 +16,7 @@ import pt.sirs.app.StarDrive.auth.AuthService;
 import pt.sirs.app.StarDrive.production.ProductionService;
 import pt.sirs.app.StarDrive.production.domain.Assembler;
 import pt.sirs.app.StarDrive.production.domain.AssemblyLine;
+import pt.sirs.app.StarDrive.production.repo.LinesRepository;
 import pt.sirs.app.StarDrive.user.UserService;
 import pt.sirs.app.StarDrive.user.domain.User;
 
@@ -93,6 +95,13 @@ public class ProductionController {
         if(user.getRole() != User.Role.ENGINEER) throw new ResponseStatusException(HttpStatusCode.valueOf(403));
 
         AssemblyLine line = productionService.startAssembling(body.get("lineId"));
+        return line;
+    }
+
+    @PutMapping("/updateLine")
+    AssemblyLine updateLine(@RequestBody Map<String, String> body){
+
+        AssemblyLine line = productionService.updateAssemblersInfo(body.get("lineId"));
         return line;
     }
 }

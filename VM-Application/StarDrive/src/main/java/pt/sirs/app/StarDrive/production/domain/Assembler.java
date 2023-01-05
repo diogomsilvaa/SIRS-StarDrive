@@ -16,10 +16,10 @@ public abstract class Assembler {
 
 
     private float productionRate;
-    private AssemblyLine line;
     private Duration timeRunning;
     private LocalDateTime startTime;
     private boolean onProduction;
+    private String lineId;
 
 
     @Transient
@@ -56,14 +56,6 @@ public abstract class Assembler {
         this.logger.log(Level.INFO, message);
     }
 
-    public void setLine(AssemblyLine line) {
-        this.line = line;
-    }
-
-    public AssemblyLine getLine() {
-        return line;
-    }
-
     public Duration getTimeRunning() {
         return timeRunning;
     }
@@ -90,6 +82,14 @@ public abstract class Assembler {
 
     public void setOnProduction(boolean onProduction) {
         this.onProduction = onProduction;
+    }
+
+    public void setLineId(String lineId) {
+        this.lineId = lineId;
+    }
+
+    public String getLineId() {
+        return lineId;
     }
 
     public boolean isOnProduction() {

@@ -53,7 +53,7 @@ public class Painter extends Assembler{
         updateTimeRunning();
         setProductionRate(getRandom(7, 12));
         if(!checkPaintLevels()){
-            info("PAINT REPLACEMENT ALERT: replace paints in line " + getLine().getSeqNum());
+            info("PAINT REPLACEMENT ALERT: replace paints in line " + getLineId());
         } 
     }
 }

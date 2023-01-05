@@ -51,7 +51,7 @@ public class BatteryAssembler extends Assembler{
         updateTimeRunning();
         setProductionRate(getRandom(7, 12));
         if(!checkBateries()){
-            info("HIGH TEMPERATURE ALERT: battery insertion in line " + getLine().getSeqNum());
+            info("HIGH TEMPERATURE ALERT: battery insertion in line " + getLineId() + " not finished due to high temperature.");
         } 
     }
 }

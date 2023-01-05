@@ -16,7 +16,7 @@ public class ChassisAssembler extends Assembler{
         float stability = getRandom(80, 100);
         if(stability < 99.8){
             setStabilityAlert(true);
-            info("Stability problem in line " + getLine().getSeqNum());
+            info("Stability problem in line " + getLineId());
             return false;
         }
         return true;
@@ -48,11 +48,11 @@ public class ChassisAssembler extends Assembler{
     @Override
     public void updateInfo(){
         if(!isOnProduction()) return;
-        setStability(getRandom(70, 80));
+        setStability(getRandom(80, 100));
         updateTimeRunning();
         setProductionRate(getRandom(7, 12));
         if(!testStability()){
-            info("Chassis placement not finished in line " + getLine().getSeqNum() + " due to stability problems.");
+            info("Chassis placement not finished in line " + getLineId() + " due to stability problems.");
         } 
     }
 }

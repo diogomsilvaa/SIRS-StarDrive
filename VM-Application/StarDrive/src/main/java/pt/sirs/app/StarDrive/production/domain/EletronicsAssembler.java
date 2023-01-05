@@ -22,7 +22,7 @@ public class EletronicsAssembler extends Assembler{
         float voltage = getRandom(60, 120);
         if(voltage < 60.01 || voltage > 19.99){
             setVoltageAlert(true);
-            info("Voltage problem in line " + getLine().getSeqNum());
+            info("Voltage problem in line " + getLineId());
             return false;
         }
         return true;
@@ -58,7 +58,7 @@ public class EletronicsAssembler extends Assembler{
         updateTimeRunning();
         setProductionRate(getRandom(7, 12));
         if(!testVoltage()){
-            info("Electronics assembling not finished in line " + getLine().getSeqNum() + " due to voltage problems.");
+            info("Electronics assembling not finished in line " + getLineId() + " due to voltage problems.");
         } 
     }
 }

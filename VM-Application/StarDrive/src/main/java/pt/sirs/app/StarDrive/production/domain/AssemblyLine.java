@@ -21,6 +21,9 @@ public class AssemblyLine {
     private static int seqNum = 0;
 
     private ArrayList<String> assemblersIDs;
+
+    @Transient
+    private ArrayList<Assembler> assemblers;
     
 
     public AssemblyLine(){
@@ -70,7 +73,15 @@ public class AssemblyLine {
         assemblersIDs.add(assembler.getId());
     }
 
-    public ArrayList<String> getAssemblers() {
+    public void setAssemblers(ArrayList<Assembler> assemblers) {
+        this.assemblers = assemblers;
+    }
+
+    public ArrayList<Assembler> getAssemblers() {
+        return assemblers;
+    }
+
+    public ArrayList<String> getAssemblersIDs() {
         return assemblersIDs;
     }
 

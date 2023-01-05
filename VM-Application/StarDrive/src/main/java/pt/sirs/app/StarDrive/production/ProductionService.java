@@ -74,7 +74,7 @@ public class ProductionService {
         if(assembler == null || line == null) throw new IllegalArgumentException("Assembler or line does not exist");
 
         line.addAssembler(assembler);
-        assembler.setLine(line);
+        assembler.setLineId(line.getId());
         linesRepository.save(line);
 
         return line;
@@ -85,29 +85,33 @@ public class ProductionService {
         if(line == null) throw new IllegalArgumentException("Line does not exist");
         line.setOnProduction(true);
         line.setStartDate(LocalDateTime.now().toString());
-        ArrayList<String> assemblersIDs = line.getAssemblers();
+        ArrayList<String> assemblersIDs = line.getAssemblersIDs();
 
         for(Assembler assembler : assemblers){
             if(assemblersIDs.contains(assembler.getId())){
                 assembler.assemble();
             }
         }
+        linesRepository.save(line);
         return line;
     }
 
     public AssemblyLine updateAssemblersInfo(String lineID){
         AssemblyLine line = linesRepository.findById(lineID).get();
         if(line == null) throw new IllegalArgumentException("Line does not exist");
-        ArrayList<String> assemblersIDs = line.getAssemblers();
-
+        ArrayList<String> assemblersIDs = line.getAssemblersIDs();
+        ArrayList<Assembler> assemblersInLine = new ArrayList<Assembler>();
         double productionRate = 0;
-        for(Assembler assembler : assemblers){
+        for( Assembler assembler : assemblers){
             if(assemblersIDs.contains(assembler.getId())){
+                assembler.updateInfo();
+                assemblersInLine.add(assembler);
                 productionRate += assembler.getProductionRate();
-                assembler.assemble();
             }
         }
         line.setProductionRate((float) productionRate/assemblersIDs.size());
+        line.setAssemblers(assemblersInLine);
+        linesRepository.save(line);
         return line;
     }
 }
