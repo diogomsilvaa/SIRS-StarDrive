@@ -58,6 +58,12 @@ public class StarDriveApplication extends SpringBootServletInitializer implement
 
 		productionService.startAssembling(line.getId());
 
+		newLine = productionService.createAssemblyLine();
+		newAssembler = productionService.createAssembler("batteries");
+		line = productionService.addAssembler(newAssembler.getId(), newLine.getId());
+
+		productionService.startAssembling(line.getId());
+
 		System.out.println("StarDrive Application Started");
     }
 }

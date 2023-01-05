@@ -44,14 +44,6 @@ function tableGen(data){
 
     return table;
 }
-function tableMachines(id, datas){
-    const divShowData = document.getElementById(id);
-    divShowData.innerHTML = "";
-    
-    for(var i=0;i<datas.length;i++){
-        divShowData.appendChild(tableGen(datas[i]));
-    }
-}
 
 function login(){
          
@@ -213,8 +205,8 @@ function refreshTable(){
                 tableCreate("tableSpot",data)
             })
         });     
-
-    setInterval('machinesData()', 500);
+    
+    setInterval('asseblyLinesTable()', 500);
 }
 
 function logout(){
@@ -222,24 +214,28 @@ function logout(){
     window.location.href='./index.html';
 }
 
-function machinesData(){
-    let abs2 = [ 
-        { Day: "01-01-2012", Reason: "Coding"},
-        { Day: "01-01-2012", Reason: "Read"},
-        { Day: "01-01-2012", Reason: "ghh"},
-        { Day: "01-01-2012", Reason: "aasdas"},
-        { Day: "01-01-2012", Reason: "asdsad"}
-    ];
 
-    let abs3 = [
-        { name: "Monte Falco", job: "Coding", time: "01:00-02:00", c: Math.floor(Math.random() * 100) },
-        { name: "Monte Falterona", job: "Read", time: "01:00-02:00",  c: Math.floor(Math.random() * 100) },
-        { name: "Poggio Scali", job: "ghh", time: "01:00-02:00", c: Math.floor(Math.random() * 100)},
-        { name: "Pratomagno", job: "aasdas", time: "01:00-02:00",  c: Math.floor(Math.random() * 100) },
-        { name: "Monte Amiata", job: "asdsad", time: "01:00-02:00",  c: Math.floor(Math.random() * 100 ) }
-    ];
+function asseblyLinesTable(){
     
+    fetch("http://localhost:8080/production/getLines",{
+            method: 'GET',
+        }).then((response) => {
+            // http status
+            if(!response.ok){
+                window.alert("Error");
+                //window.location.href = "./index.html";
+                return;
+            }
+                
+            response.json().then((data) => {
+                const divShowData = document.getElementById("asseblyLinesTable");
+                divShowData.innerHTML = "";
+
+                divShowData.appendChild(tableGen(data));
+    
+            })
+        });
     //console.log([abs2,abs3])
-    tableMachines("machineTable",[abs2,abs3]);
+    
 }
 

@@ -2,6 +2,7 @@ package pt.sirs.app.StarDrive.production;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.sound.sampled.Line;
 
@@ -113,5 +114,9 @@ public class ProductionService {
         line.setAssemblers(assemblersInLine);
         linesRepository.save(line);
         return line;
+    }
+
+    public List<AssemblyLine> getAssemblyLines(){
+        return linesRepository.findAll();
     }
 }

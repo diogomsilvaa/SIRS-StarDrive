@@ -1,11 +1,14 @@
 package pt.sirs.app.StarDrive.production.api;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -109,4 +112,17 @@ public class ProductionController {
         AssemblyLine line = productionService.updateAssemblersInfo(body.get("lineId"));
         return line;
     }
+
+    @CrossOrigin
+    @GetMapping("/getLines")
+    List<AssemblyLine> getAssemblyLines(){
+
+        List<AssemblyLine> list = new ArrayList<AssemblyLine>();
+        
+        for(AssemblyLine line : productionService.getAssemblyLines()){
+            if(line.getStartDate()!=null) list.add(line);
+        }
+        return list;
+    }
+
 }
