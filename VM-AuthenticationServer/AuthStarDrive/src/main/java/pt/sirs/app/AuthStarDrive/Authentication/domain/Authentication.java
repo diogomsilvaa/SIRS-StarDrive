@@ -79,10 +79,9 @@ public class Authentication implements Serializable{
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
         LocalDateTime now = LocalDateTime.now();
 
-        token = "StarDriveDB:";
-        token += dtf.format(now) + ":";
-        now.plusMinutes(10);
-        token += dtf.format(now) + ":" + id;
+        token = "StarDrive;";
+        token += dtf.format(now) + ";";
+        token += dtf.format(now.plusMinutes(10)) + ";" + id;
 
         return encrypt(token);
     }

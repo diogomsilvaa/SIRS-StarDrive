@@ -52,11 +52,16 @@ public class AuthenticationService {
 
     private void updateSerializable() {
         File file = new File("Serializable.txt");
-        file.createNewFile();
-        FileOutputStream fout = new FileOutputStream(file, false);    
-        ObjectOutputStream out = new ObjectOutputStream(fout);    
-        out.writeObject(auth);    
-        out.flush();    
-        out.close();   
+        try {
+            file.createNewFile();
+            FileOutputStream fout = new FileOutputStream(file, false);    
+            ObjectOutputStream out = new ObjectOutputStream(fout);    
+            out.writeObject(auth);    
+            out.flush();    
+            out.close();   
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

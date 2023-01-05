@@ -24,14 +24,6 @@ public class StarDriveApplication extends SpringBootServletInitializer implement
 	@Override
     public void afterPropertiesSet() {
 
-		AuthService authService = new AuthService("[B@49ad6061");
-		try {
-			String message = authService.decrypt();
-			System.out.println(message);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
         // Run on startup
 		userService.createUser("Diogo", User.Role.ENGINEER, 2000.0);
 		userService.createUser("Miguel", User.Role.EMPLOYEE, 100.0);

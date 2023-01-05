@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import pt.sirs.app.StarDrive.shiftManager.domain.Shift;
 
 @Document(collection = "users")
 public class User {
