@@ -6,7 +6,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
-import pt.sirs.app.StarDrive.auth.AuthService;
 import pt.sirs.app.StarDrive.user.UserService;
 import pt.sirs.app.StarDrive.user.domain.User;
 

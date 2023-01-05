@@ -1,16 +1,16 @@
 package pt.sirs.app.StarDrive.production.domain;
 
+import java.time.LocalDateTime;
+
 public class Painter extends Assembler{
     float paintLevels[] = {0, 0, 0};
     boolean paintLevelsAlert = false;
-    int assembleSteps;
 
 
     public Painter(int _id){
         super(_id);
-        assembleSteps = (int) (3000 * STEP_MULTIPLIER);
         setPaintLevels(100, 100, 100);
-        info("Painter created and added to assembly line " + getLine().getSeqNum());
+        info("Painter created.");
     }
 
     public void setPaintLevels(float red, float green, float blue) {
@@ -38,18 +38,22 @@ public class Painter extends Assembler{
     }
 
     @Override
-    void assemble(){
+    public void assemble() {
+        setOnProduction(true);
+        setStartTime(LocalDateTime.now());
+        updateTimeRunning();
+    }
+
+    @Override
+    public void updateInfo(){
+        if(!isOnProduction()) return;
         float startLevels[] = getPaintLevels();
-        long startTime = System.currentTimeMillis();
-        info("Paint job started in line " + getLine().getSeqNum());
-        for(int step = 0; step < assembleSteps; step++){
-            float paintCost = 3/assembleSteps;
-            setPaintLevels(startLevels[0] - getRandom(0, paintCost), startLevels[1] - getRandom(0, paintCost), startLevels[2] - getRandom(0, paintCost));
-            if(!checkPaintLevels()){
-                info("PAINT REPLACEMENT ALERT: replace paints in line " + getLine().getSeqNum());
-            } 
-        }
-        addTime(System.currentTimeMillis() - startTime);
-        info("Paint job finished in line " + getLine().getSeqNum());
+        float paintCost = 0.1f;
+        setPaintLevels(startLevels[0] - getRandom(0, paintCost), startLevels[1] - getRandom(0, paintCost), startLevels[2] - getRandom(0, paintCost));
+        updateTimeRunning();
+        setProductionRate(getRandom(7, 12));
+        if(!checkPaintLevels()){
+            info("PAINT REPLACEMENT ALERT: replace paints in line " + getLine().getSeqNum());
+        } 
     }
 }

@@ -20,16 +20,13 @@ public class AssemblyLine {
     @Transient
     private static int seqNum = 0;
 
-    @Transient
-    private ArrayList<Assembler> assemblers;
+    private ArrayList<String> assemblersIDs;
     
 
     public AssemblyLine(){
-        assemblers = new ArrayList<Assembler>();
+        assemblersIDs = new ArrayList<String>();
         setId("L" + seqNum);
         seqNum++;
-        // ir buscar o sec num à base dados
-        // guardar esta info na base de dados
     }
 
     public String getId() {
@@ -60,45 +57,21 @@ public class AssemblyLine {
     public int getSeqNum() {
         return seqNum;
     }
-    public boolean onProduction(){
-        return this.onProduction;
+    
+    public void setOnProduction(boolean onProduction) {
+        this.onProduction = onProduction;
     }
-    public void setStatus(boolean status){
-        this.onProduction = status;
+
+    public boolean isOnProduction() {
+        return onProduction;
     }
 
     public void addAssembler(Assembler assembler){
-        assemblers.add(assembler);
+        assemblersIDs.add(assembler.getId());
     }
 
-    public ArrayList<Assembler> getAssemblers() {
-        return assemblers;
-    }
-
-    public ArrayList<String> getAssemblersIDs() {
-        ArrayList<String> assemblersIDs = new ArrayList<>();
-        assemblers.forEach(e -> assemblersIDs.add(e.getId()));;
+    public ArrayList<String> getAssemblers() {
         return assemblersIDs;
     }
 
-    public int startAssembling(){
-        ArrayList<Assembler> assemblers = getAssemblers();
-        for(Assembler assembler : assemblers){
-            assembler.assemble();
-        }
-        return seqNum;
-    }
-
-    @Override
-    public String toString() {
-
-        String text = "Status: " + (onProduction?"Producing":"Stopped") + "\n";
-        text += "Assemblers: \n";
-        ArrayList<Assembler> assemblers = getAssemblers();
-        for(Assembler assembler : assemblers){
-            text += " -> " + assembler.toString(); 
-        }
-
-        return text;
-    }
 }

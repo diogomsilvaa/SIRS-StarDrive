@@ -1,6 +1,5 @@
 package pt.sirs.app.StarDrive.shiftManager.domain;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import org.springframework.data.annotation.Id;

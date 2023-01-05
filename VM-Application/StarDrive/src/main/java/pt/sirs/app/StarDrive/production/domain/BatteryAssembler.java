@@ -1,15 +1,15 @@
 package pt.sirs.app.StarDrive.production.domain;
 
+import java.time.LocalDateTime;
+
 public class BatteryAssembler extends Assembler{
 
-    float batteryTemp;
-    boolean tempAlert;
-    int assembleSteps;
+    private float batteryTemp;
+    private boolean tempAlert;
 
     public BatteryAssembler(int _id){
         super(_id);
-        assembleSteps = (int) (10000 * STEP_MULTIPLIER);
-        info("Batteries Assembler created and added to assembly line " + getLine().getSeqNum());
+        info("Batteries Assembler created");
 
     }
 
@@ -25,6 +25,10 @@ public class BatteryAssembler extends Assembler{
         this.tempAlert = tempAlert;
     }
 
+    public boolean getTempAlert() {
+        return tempAlert;
+    }
+
     public boolean checkBateries(){
         if(getBatteryTemp() > 99.99){
             setTempAlert(true);
@@ -32,17 +36,22 @@ public class BatteryAssembler extends Assembler{
         }
         return true;
     }
+    
     @Override
-    void assemble() {
-        long startTime = System.currentTimeMillis();
-        info("Battery insertion started in line " + getLine().getSeqNum());
-        for(int step = 0; step < assembleSteps; step++){
-            setBatteryTemp(getRandom(50 + (40*step)/(assembleSteps), 50 + (50*step)/(assembleSteps)));
-            if(!checkBateries()){
-                info("HIGH TEMPERATURE ALERT: battery insertion in line " + getLine().getSeqNum());
-            } 
-        }
-        addTime(System.currentTimeMillis() - startTime);
-        info("Battery insertion finished in line " + getLine().getSeqNum());
+    public void assemble() {
+        setOnProduction(true);
+        setStartTime(LocalDateTime.now());
+        updateTimeRunning();
+    }
+
+    @Override
+    public void updateInfo(){
+        if(!isOnProduction()) return;
+        setBatteryTemp(getRandom(50, 100));
+        updateTimeRunning();
+        setProductionRate(getRandom(7, 12));
+        if(!checkBateries()){
+            info("HIGH TEMPERATURE ALERT: battery insertion in line " + getLine().getSeqNum());
+        } 
     }
 }

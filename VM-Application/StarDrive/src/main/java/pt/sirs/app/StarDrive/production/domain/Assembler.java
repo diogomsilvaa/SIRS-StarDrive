@@ -4,12 +4,11 @@ import java.util.logging.*;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Random;
 
-@Document(collection = "assemblers")
 public abstract class Assembler {
     
     @Id
@@ -19,19 +18,18 @@ public abstract class Assembler {
     private float productionRate;
     private AssemblyLine line;
     private Duration timeRunning;
+    private LocalDateTime startTime;
+    private boolean onProduction;
+
 
     @Transient
-    static final double STEP_MULTIPLIER = 100000;
-
-    @Transient
-    private Logger logger;
+    private Logger logger = Logger.getLogger(Assembler.class.getName());
 
     @Transient
     private Random rand = new Random();
 
     public Assembler(int id){
         setId("A" + id);
-        logger = Logger.getLogger(Assembler.class.getName());
         logger.setLevel(Level.INFO);
         timeRunning = Duration.ZERO;
         productionRate = 0;
@@ -46,7 +44,7 @@ public abstract class Assembler {
         this.id = id;
     }
 
-    public void set_productionRate(float _productionRate) {
+    public void setProductionRate(float _productionRate) {
         this.productionRate = _productionRate;
     }
     
@@ -74,9 +72,31 @@ public abstract class Assembler {
         timeRunning.plusMillis(millis);
     }
 
+    public void updateTimeRunning(){
+        timeRunning = Duration.between(startTime, LocalDateTime.now());
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
     public float getRandom(float min, float max) {
         return min + (max-min) * rand.nextFloat();
     }
 
-    abstract void assemble();
+    public void setOnProduction(boolean onProduction) {
+        this.onProduction = onProduction;
+    }
+
+    public boolean isOnProduction() {
+        return onProduction;
+    }
+
+    public abstract void assemble();
+
+    public abstract void updateInfo();
 }

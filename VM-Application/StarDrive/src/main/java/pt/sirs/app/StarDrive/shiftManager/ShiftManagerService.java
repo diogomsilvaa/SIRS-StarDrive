@@ -1,9 +1,7 @@
 package pt.sirs.app.StarDrive.shiftManager;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 
-import javax.naming.NameNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

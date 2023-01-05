@@ -1,15 +1,15 @@
 package pt.sirs.app.StarDrive.production.domain;
 
+import java.time.LocalDateTime;
+
 public class ChassisAssembler extends Assembler{
 
-    boolean stabilityAlert = false;
-    int assembleSteps;
+    private boolean stabilityAlert = false;
+    private double stability = 0;
 
     public ChassisAssembler(int _id){
         super(_id);
-        assembleSteps = (int) (12000 * STEP_MULTIPLIER);
-        info("Chasis Assembler created and added to assembly line " + getLine().getSeqNum());
-
+        info("Chasis Assembler created");
     }
 
     public boolean testStability() {
@@ -26,17 +26,33 @@ public class ChassisAssembler extends Assembler{
         this.stabilityAlert = stabilityAlert;
     }
 
+    public boolean getStabilityAlert() {
+        return stabilityAlert;
+    }
+
+    public void setStability(double stability) {
+        this.stability = stability;
+    }
+
+    public double getStability() {
+        return stability;
+    }
+
     @Override
-    void assemble(){
-        long startTime = System.currentTimeMillis();
-        info("Chassis placement started in line " + getLine().getSeqNum());
-        for(int step = 0; step < assembleSteps; step++){
-            if(step % assembleSteps != 0) continue;
-            if(!testStability()){
-                info("Chassis placement not finished in line " + getLine().getSeqNum() + "due to stability problems.");
-            } 
-        }
-        addTime(System.currentTimeMillis() - startTime);
-        info("Chassis placement finished in line " + getLine().getSeqNum());
+    public void assemble() {
+        setOnProduction(true);
+        setStartTime(LocalDateTime.now());
+        updateTimeRunning();
+    }
+
+    @Override
+    public void updateInfo(){
+        if(!isOnProduction()) return;
+        setStability(getRandom(70, 80));
+        updateTimeRunning();
+        setProductionRate(getRandom(7, 12));
+        if(!testStability()){
+            info("Chassis placement not finished in line " + getLine().getSeqNum() + " due to stability problems.");
+        } 
     }
 }

@@ -1,33 +1,98 @@
 package pt.sirs.app.StarDrive.production.api;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import java.util.Map;
+import java.util.concurrent.TimeoutException;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
+
+import pt.sirs.app.StarDrive.auth.AuthService;
 import pt.sirs.app.StarDrive.production.ProductionService;
 import pt.sirs.app.StarDrive.production.domain.Assembler;
 import pt.sirs.app.StarDrive.production.domain.AssemblyLine;
+import pt.sirs.app.StarDrive.user.UserService;
+import pt.sirs.app.StarDrive.user.domain.User;
 
 @RestController
 @RequestMapping("/production")
 public class ProductionController {
     
     @Autowired
+    UserService userService;
+
+    @Autowired
     ProductionService productionService;
 
     @PostMapping("/createLine")
-    AssemblyLine createAssemblyLine(){
+    AssemblyLine createAssemblyLine(@RequestBody Map<String, String> body){
+        AuthService auth = new AuthService(body.get("token"));
+        try {
+            auth.verifyToken();
+        } catch (TimeoutException e) {
+            throw new ResponseStatusException(HttpStatusCode.valueOf(408));
+        } catch (Exception e){
+            throw new ResponseStatusException(HttpStatusCode.valueOf(500));
+        }
+        User user = userService.getUser(auth.getId());
+        if(user.getRole() != User.Role.ENGINEER) throw new ResponseStatusException(HttpStatusCode.valueOf(403));
         AssemblyLine newLine = productionService.createAssemblyLine();
         return newLine;
     }
 
+    @PostMapping("/addAssembler")
+    AssemblyLine addAssembler(@RequestBody Map<String, String> body){
+        AuthService auth = new AuthService(body.get("token"));
+        try {
+            auth.verifyToken();
+        } catch (TimeoutException e) {
+            throw new ResponseStatusException(HttpStatusCode.valueOf(408));
+        } catch (Exception e){
+            throw new ResponseStatusException(HttpStatusCode.valueOf(500));
+        }
+        User user = userService.getUser(auth.getId());
+        if(user.getRole() != User.Role.ENGINEER) throw new ResponseStatusException(HttpStatusCode.valueOf(403));
+
+        AssemblyLine line = productionService.addAssembler(body.get("assemblerId"), body.get("lineId"));
+        return line;
+    }
+
     @PostMapping("/createAssembler")
-    Assembler createAssember(){
-        Assembler newAssembler = productionService.createAssembler("eletronic");
+    Assembler createAssembler(@RequestBody Map<String, String> body){
+        AuthService auth = new AuthService(body.get("token"));
+        try {
+            auth.verifyToken();
+        } catch (TimeoutException e) {
+            throw new ResponseStatusException(HttpStatusCode.valueOf(408));
+        } catch (Exception e){
+            throw new ResponseStatusException(HttpStatusCode.valueOf(500));
+        }
+        User user = userService.getUser(auth.getId());
+        if(user.getRole() != User.Role.ENGINEER) throw new ResponseStatusException(HttpStatusCode.valueOf(403));
+
+        Assembler newAssembler = productionService.createAssembler(body.get("type"));
         return newAssembler;
+    }
+
+    @PostMapping("/startLine")
+    AssemblyLine startLine(@RequestBody Map<String, String> body){
+
+        AuthService auth = new AuthService(body.get("token"));
+        try {
+            auth.verifyToken();
+        } catch (TimeoutException e) {
+            throw new ResponseStatusException(HttpStatusCode.valueOf(408));
+        } catch (Exception e){
+            throw new ResponseStatusException(HttpStatusCode.valueOf(500));
+        }
+        User user = userService.getUser(auth.getId());
+        if(user.getRole() != User.Role.ENGINEER) throw new ResponseStatusException(HttpStatusCode.valueOf(403));
+
+        AssemblyLine line = productionService.startAssembling(body.get("lineId"));
+        return line;
     }
 }
