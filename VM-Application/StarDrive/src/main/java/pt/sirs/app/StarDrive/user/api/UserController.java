@@ -1,5 +1,6 @@
 package pt.sirs.app.StarDrive.user.api;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
@@ -75,6 +76,22 @@ public class UserController {
         if(user == null) throw new ResponseStatusException(HttpStatusCode.valueOf(404));
 
         return user;
+    }
+
+    @CrossOrigin
+    @PostMapping("/getEmployees")
+    List<User> getEmployees(@RequestBody Map<String, String> body){
+        AuthService auth = new AuthService(body.get("token"));
+        try {
+            auth.verifyToken();
+        } catch (TimeoutException e) {
+            throw new ResponseStatusException(HttpStatusCode.valueOf(408));
+        } catch (Exception e){
+            throw new ResponseStatusException(HttpStatusCode.valueOf(500));
+        }
+        User user = userService.getUser(auth.getId());
+        if(user.getRole() != User.Role.ENGINEER) throw new ResponseStatusException(HttpStatusCode.valueOf(403));
+        return userService.getUsers();
     }
 
 }
