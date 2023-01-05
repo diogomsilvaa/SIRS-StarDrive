@@ -43,5 +43,15 @@ public class UserService {
         return user;
     }
 
+    public void addAbsentDay(String employeeId, String date){
+
+        User user = userRepository.findById(employeeId).get();
+        
+        if(user == null) throw new IllegalArgumentException("User does not exist");
+
+        user.addAbsentDay(date);
+        userRepository.save(user);
+    }
+
 
 }

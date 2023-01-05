@@ -25,9 +25,10 @@ public class StarDriveApplication extends SpringBootServletInitializer implement
 
         // Run on startup
 		User u1 = userService.createUser("Diogo", User.Role.ENGINEER, 2000.0);
-		u1.addAbsentDay("2023/01/01");
-		u1.addAbsentDay("2022/01/01");
-		u1.addAbsentDay("2022/11/21");
+		
+		userService.addAbsentDay(u1.getId(), "2023/01/01");
+		userService.addAbsentDay(u1.getId(), "2022/01/01");
+		userService.addAbsentDay(u1.getId(), "2022/11/21");
 		userService.createUser("Miguel", User.Role.EMPLOYEE, 100.0);
 		userService.createUser("Carlos", User.Role.EMPLOYEE, 1500.0);
 		System.out.println("StarDrive Application Started");

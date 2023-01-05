@@ -133,13 +133,10 @@ function login(){
             })
 
         })   
-
-        
-
-
-
     }  
 }
+
+
 
 function getCookie(name) {
     var nameEQ = name + "=";
@@ -193,7 +190,17 @@ function loadPrivateArea(){
 
                 if(data["absentDays"].length > 0){
                     var absentLeaves = document.getElementById("absentLeaves");
-                    absentLeaves.appendChild(tableGen(data["absentDays"]));
+                    console.log(data["absentDays"])
+
+                    for(var key in data["absentDays"]){
+                        console.log(data["absentDays"][key]);
+                        var p = document.getElementById("absentLeaves");
+                        p.appendChild(document.createTextNode(data["absentDays"][key]));
+                        p.appendChild(document.createElement("br"));
+                    }
+                    
+
+                    //absentLeaves.appendChild(tableGen(data["absentDays"]));
                 }
                 else{
                     var absentLeaves = document.getElementById("absentLeaves");
@@ -219,18 +226,6 @@ function loadPrivateArea(){
     
 }
 
-
-let abs = [
-    { Day: "01-01-2012", Reason: "Coding"},
-    { Day: "01-01-2012", Reason: "Read"},
-    { Day: "01-01-2012", Reason: "ghh"},
-    { Day: "01-01-2012", Reason: "aasdas"},
-    { Day: "01-01-2012", Reason: "asdsad"}
-];
-
-function absentLeaves(){
-    tableCreate("absentLeaves", abs)
-}
 
 function refreshTable(){
     
