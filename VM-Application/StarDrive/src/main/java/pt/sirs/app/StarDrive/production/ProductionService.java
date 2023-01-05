@@ -30,7 +30,7 @@ public class ProductionService {
     }
 
     public AssemblyLine createAssemblyLine(){
-        AssemblyLine line = new AssemblyLine(linesNum);
+        AssemblyLine line = new AssemblyLine("L" + linesNum);
         linesNum++;
         linesRepository.save(line);
         return line;

@@ -24,9 +24,9 @@ public class AssemblyLine {
     private ArrayList<Assembler> assemblers;
     
 
-    public AssemblyLine(int seqNum){
+    public AssemblyLine(String id){
         assemblersIDs = new ArrayList<String>();
-        setId("L" + seqNum);
+        setId(id);
     }
 
     public String getId() {
