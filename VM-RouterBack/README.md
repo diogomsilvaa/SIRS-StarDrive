@@ -30,6 +30,10 @@ Run to enable ufw
 ```
 sudo ufw enable
 ```
+Run the followinf command to be able to respond to clients
+```
+sudo ip route add 10.0.4.0/24 via 192.168.1.2 dev enp0s8
+```
 Run the following command to see the default rules of ufw
 ```
 sudo ufw status verbose
