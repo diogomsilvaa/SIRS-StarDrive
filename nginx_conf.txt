@@ -34,16 +34,16 @@ http {
 
     server {
         listen       8082 ssl;
-	listen [::]:8082 ssl;
+	    listen [::]:8082 ssl;
         
 
-	ssl_certificate    	/usr/local/etc/nginx/host.crt;
+	    ssl_certificate    	/usr/local/etc/nginx/host.crt;
     	ssl_certificate_key 	/usr/local/etc/nginx/host.key;
 	
     	root /var/www/front/html;
 
-	index index.html;
-	server_name _;
+	    index index.html;
+	    server_name _;
 	
     	
         location / {
