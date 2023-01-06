@@ -13,22 +13,37 @@
     <div>
         <h1>Industry: StarDrive, BackOffice</h1>
         <h3>Assembly Lines</h3>
-        <body onload="shiftPage()"></body>
+        <body onload="asseblyLinesPage()"></body>
         <p id = "lines"></p>
-        <button onClick ="createShift()">Create</button>
+
+        <button onClick ="createLine()">Create Assembly Line</button>
         <br><br>
-        <select name="Employee" id="employeeDropTable"></select>
-        <label for="shiftDropTable">Shift:</label>
-        <select name="Shifts" id="shiftDropTable"></select>
+        <h3>Assemblers</h3>
+        <p id = "assemblers"></p>
+        <select name="assemblerTypeDropTable" id="assemblerTypeDropTable"></select>
+        <button onClick ="createAssembler()">Create Assembler</button>
+        <br><br>
+        <h3>Add Assembler to Assembly Line</h3>
+        <label for="lineToAddDropTable">Line:</label>
+        <select name="lineToAddDropTable" id="lineToAddDropTable"></select>
+        <label for="assemblerToAddDropTable">Assembler</label>
+        <select name="assemblerToAddDropTable" id="assemblerToAddDropTable"></select>
+        <br><br>
+        <button onClick ="addAssembler()">Add Assembler</button>
+        <br><br>
+        <h3>Start Assembly Line</h3>
+        <select name="assemblyLine" id="assemblyLine"></select>
+        <button onClick ="startAssemblyLine()">Start</button>
+   
 
         <br><br>
         
-       
-        <button onClick ="addShift()">Add</button>
+
         <br><br><br>
         <button onClick="backPrivate()">Back</button>
-        
+        <button onClick="window.location.reload()">Refresh</button>
         <button onClick="logout()">Logout</button>
+        
     </div>
     <script src="js/back.js"></script>
 </body>

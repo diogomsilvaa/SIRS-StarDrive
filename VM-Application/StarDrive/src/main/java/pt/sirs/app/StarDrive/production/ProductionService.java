@@ -122,4 +122,8 @@ public class ProductionService {
     public List<AssemblyLine> getAssemblyLines(){
         return linesRepository.findAll();
     }
+
+    public List<Assembler> getAssemblers(){
+        return assemblers;
+    }
 }

@@ -143,7 +143,30 @@ public class ProductionController {
         User user = userService.getUser(auth.getId());
         if(user.getRole() != User.Role.ENGINEER) throw new ResponseStatusException(HttpStatusCode.valueOf(403));
 
-        return productionService.getAssemblyLines();
+        List<AssemblyLine> list = new ArrayList<AssemblyLine>();
+        for(AssemblyLine line : productionService.getAssemblyLines()){
+            list.add(productionService.updateAssemblersInfo(line.getId()));
+        }
+            
+        return list;
     }
+
+    @CrossOrigin
+    @PostMapping("/getAssemblers")
+    List<Assembler> getAssemblers(@RequestBody Map<String, String> body){
+        AuthService auth = new AuthService(body.get("token"));
+        try {
+            auth.verifyToken();
+        } catch (TimeoutException e) {
+            throw new ResponseStatusException(HttpStatusCode.valueOf(408));
+        } catch (Exception e){
+            throw new ResponseStatusException(HttpStatusCode.valueOf(500));
+        }
+        User user = userService.getUser(auth.getId());
+        if(user.getRole() != User.Role.ENGINEER) throw new ResponseStatusException(HttpStatusCode.valueOf(403));
+
+        return productionService.getAssemblers();
+    }
+
 
 }

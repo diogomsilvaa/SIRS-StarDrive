@@ -89,7 +89,7 @@ function login(){
                     // http status
                     if(!response.ok){
                         window.alert("Error");
-                        window.location.href = "./index.html";
+                        logout();
                         return;
                     }
                         
@@ -272,6 +272,168 @@ function goCreateShift(){
 function goAssemblyLines(){
     window.location.href='./assemblyLines.html'
 }
+function asseblyLinesPage(){
+    //setInterval('asseblyLinesTable()', 500);
+    asseblyLinesTable()
+    assemblersTable()
+    assemblersType()
+}
+
+function asseblyLinesTable(){
+    data = {token : getCookie("token")}
+    fetch("http://localhost:8080/production/getAllLines",{
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: JSON.stringify(data) // body data type must match "Content-Type" header
+    }).then((response) => {
+        // http status
+        if(!response.ok){
+            window.alert("Error");
+            //logout();
+            return;
+        }
+        response.json().then((data) => {
+            
+            console.log(data)
+            var table = document.getElementById("lines");
+            table.innerHTML = "";
+            table.appendChild(tableGen(data))
+
+            html = "";
+            for(var key in data) {
+                html += "<option value=" + data[key]["id"]  + ">" + data[key]["id"] + "</option>"
+            }
+            document.getElementById("lineToAddDropTable").innerHTML = html;
+            document.getElementById("assemblyLine").innerHTML = html;
+        })
+
+    });
+}
+
+function addAssembler(){
+    data = {token : getCookie("token"),lineId: document.getElementById("lineToAddDropTable").value, assemblerId : document.getElementById("assemblerToAddDropTable").value}
+    fetch("http://localhost:8080/production/addAssembler",{
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: JSON.stringify(data) // body data type must match "Content-Type" header
+    }).then((response) => {
+        // http status
+        if(!response.ok){
+            window.alert("Error");
+            logout();
+            return;
+        }
+    });
+    window.location.reload()
+}
+
+function startAssemblyLine(){
+    data = {token : getCookie("token"),lineId: document.getElementById("assemblyLine").value}
+    fetch("http://localhost:8080/production/startLine",{
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: JSON.stringify(data) // body data type must match "Content-Type" header
+    }).then((response) => {
+        // http status
+        if(!response.ok){
+            window.alert("Error");
+            logout();
+            return;
+        }
+    });
+    window.location.reload()
+}
+
+function assemblersTable(){
+    data = {token : getCookie("token")}
+    fetch("http://localhost:8080/production/getAssemblers",{
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: JSON.stringify(data) // body data type must match "Content-Type" header
+    }).then((response) => {
+        // http status
+        if(!response.ok){
+            window.alert("Error");
+            logout();
+            return;
+        }
+        response.json().then((data) => {
+            
+            console.log(data)
+            var table = document.getElementById("assemblers");
+            table.innerHTML = "";
+            table.appendChild(tableGen(data))
+
+            html = "";
+            for(var key in data) {
+                html += "<option value=" + data[key]["id"]  + ">" + data[key]["id"] + "</option>"
+            }
+            document.getElementById("assemblerToAddDropTable").innerHTML = html;
+        })
+
+    });
+}
+
+function assemblersType(){
+    var data = { 0 : "eletronic", 1 : "batteries", 2 : "chasis", 3 : "painter"}
+    html = "";
+            for(var i = 0; i < 4; i++) {
+                html += "<option value=" + data[i]  + ">" + data[i] + "</option>"
+            }
+            document.getElementById("assemblerTypeDropTable").innerHTML = html;
+}
+
+function createAssembler(){
+    data = {token : getCookie("token"), type : document.getElementById("assemblerTypeDropTable").value}
+    fetch("http://localhost:8080/production/createAssembler",{
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: JSON.stringify(data) // body data type must match "Content-Type" header
+    }).then((response) => {
+        // http status
+        if(!response.ok){
+            window.alert("Error");
+            logout();
+            return;
+        }
+    });
+    window.location.reload()
+}
+
+function createLine(){
+    data = {token : getCookie("token")}
+    fetch("http://localhost:8080/production/createLine",{
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: JSON.stringify(data) // body data type must match "Content-Type" header
+    }).then((response) => {
+        // http status
+        if(!response.ok){
+            window.alert("Error");
+            logout();
+            return;
+        }
+    });
+    window.location.reload()
+}
 
 function employeeChange(){
     data = {token : getCookie("token"), id : document.getElementById("employeeDropTable").value, salary : document.getElementById("fsalary").value}
@@ -287,7 +449,7 @@ function employeeChange(){
         // http status
         if(!response.ok){
             window.alert("Error");
-            //logout();
+            logout();
             return;
         }
 
