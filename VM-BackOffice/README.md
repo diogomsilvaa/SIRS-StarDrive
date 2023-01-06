@@ -32,6 +32,14 @@ sudo apt update
 sudo apt install nginx
 ```
 
-Copy the HTML pages to `/var/www/html/`
+Copy the www content to `/var/www/html/back`
+
 
 Copy the virtual host to `/etc/nginx/sites-enabled/`
+Create key in the `/usr/local/etc/nginx/` 
+`openssl req -new -newkey rsa:4096 -x509 -sha256 -days 365 -nodes -out host.crt -keyout host.key`
+
+Copy the nginx configs to `/usr/local/etc/nginx/nginx.conf`
+
+Restart Nginx Services `service nginx restart`
+
