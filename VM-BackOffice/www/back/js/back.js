@@ -1,5 +1,5 @@
-address = "https://localhost:8080"
-auth = "https://localhost:8081"
+address = "https://192.168.0.1:8080"
+auth = "https://10.0.3.200:8081"
 
 function tableCreate(id, info) {
     const divShowData = document.getElementById(id);
