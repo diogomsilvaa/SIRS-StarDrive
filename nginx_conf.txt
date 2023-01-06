@@ -40,7 +40,7 @@ http {
 	    ssl_certificate    	/usr/local/etc/nginx/host.crt;
     	ssl_certificate_key 	/usr/local/etc/nginx/host.key;
 	
-    	root /var/www/front/html;
+    	# root /var/www/front/html;
 
 	    index index.html;
 	    server_name _;
