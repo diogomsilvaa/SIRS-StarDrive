@@ -114,6 +114,7 @@ public class ProductionService {
         }
         line.setProductionRate((float) productionRate/assemblersIDs.size());
         line.setAssemblers(assemblersInLine);
+        
         linesRepository.save(line);
         return line;
     }

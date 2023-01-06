@@ -1,0 +1,36 @@
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div>
+        <h1>Industry: StarDrive, BackOffice</h1>
+        <h3>Assembly Lines</h3>
+        <body onload="shiftPage()"></body>
+        <p id = "lines"></p>
+        <button onClick ="createShift()">Create</button>
+        <br><br>
+        <select name="Employee" id="employeeDropTable"></select>
+        <label for="shiftDropTable">Shift:</label>
+        <select name="Shifts" id="shiftDropTable"></select>
+
+        <br><br>
+        
+       
+        <button onClick ="addShift()">Add</button>
+        <br><br><br>
+        <button onClick="backPrivate()">Back</button>
+        
+        <button onClick="logout()">Logout</button>
+    </div>
+    <script src="js/back.js"></script>
+</body>
+
+</html>

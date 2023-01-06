@@ -269,6 +269,9 @@ function goChangeEmployee(){
 function goCreateShift(){
     window.location.href='./employeeShift.html'
 }
+function goAssemblyLines(){
+    window.location.href='./assemblyLines.html'
+}
 
 function employeeChange(){
     data = {token : getCookie("token"), id : document.getElementById("employeeDropTable").value, salary : document.getElementById("fsalary").value}

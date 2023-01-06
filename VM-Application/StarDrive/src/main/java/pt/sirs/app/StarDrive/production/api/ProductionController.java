@@ -110,6 +110,7 @@ public class ProductionController {
     AssemblyLine updateLine(@RequestBody Map<String, String> body){
 
         AssemblyLine line = productionService.updateAssemblersInfo(body.get("lineId"));
+
         return line;
     }
 
@@ -120,9 +121,29 @@ public class ProductionController {
         List<AssemblyLine> list = new ArrayList<AssemblyLine>();
         
         for(AssemblyLine line : productionService.getAssemblyLines()){
-            if(line.getStartDate()!=null) list.add(line);
+            if(line.isOnProduction()){
+                
+                list.add(productionService.updateAssemblersInfo(line.getId()));
+            }
         }
         return list;
+    }
+
+    @CrossOrigin
+    @PostMapping("/getAllLines")
+    List<AssemblyLine> getAllAssemblyLines(@RequestBody Map<String, String> body){
+        AuthService auth = new AuthService(body.get("token"));
+        try {
+            auth.verifyToken();
+        } catch (TimeoutException e) {
+            throw new ResponseStatusException(HttpStatusCode.valueOf(408));
+        } catch (Exception e){
+            throw new ResponseStatusException(HttpStatusCode.valueOf(500));
+        }
+        User user = userService.getUser(auth.getId());
+        if(user.getRole() != User.Role.ENGINEER) throw new ResponseStatusException(HttpStatusCode.valueOf(403));
+
+        return productionService.getAssemblyLines();
     }
 
 }

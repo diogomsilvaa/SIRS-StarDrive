@@ -220,10 +220,25 @@ function asseblyLinesTable(){
                 divShowData.appendChild(tableGen(data));
 
                 console.log(data);
+
+                const spot = document.getElementById("lines");
+                spot.innerHTML = "";
+                for(var key in data){
+                    var text = document.createTextNode(data[key]["id"]);
+                    spot.appendChild(text);
+                    spot.appendChild(document.createElement("br"));
+                    spot.appendChild(tableGen(data[key]["assemblers"]))
+                    spot.appendChild(document.createElement("br"));
+                    
+
+                }
+
     
             })
         });
     //console.log([abs2,abs3])
     
 }
+
+
 
