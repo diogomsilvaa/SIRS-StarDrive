@@ -2,6 +2,8 @@ package pt.sirs.app.StarDrive.shiftManager.api;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
@@ -51,6 +53,23 @@ public class ShiftManagerController {
         LocalDateTime endDateTime = startDateTime.plusMinutes(Long.parseLong(body.get("duration")));
         Shift newShift = shiftManagerService.createShift(startDateTime, endDateTime);
         return newShift;
+    }
+
+    @CrossOrigin
+    @PostMapping("/getShifts")
+    Shift[] getShifts(@RequestBody Map<String, String> body) {
+        AuthService auth = new AuthService(body.get("token"));
+        try {
+            auth.verifyToken();
+        } catch (TimeoutException e) {
+            throw new ResponseStatusException(HttpStatusCode.valueOf(408));
+        } catch (Exception e){
+            throw new ResponseStatusException(HttpStatusCode.valueOf(500));
+        }
+        User user = userService.getUser(auth.getId());
+        if(user.getRole() != User.Role.ENGINEER) throw new ResponseStatusException(HttpStatusCode.valueOf(403));
+        
+        return shiftManagerService.getShifts();
     }
 
     @CrossOrigin

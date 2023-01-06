@@ -1,10 +1,3 @@
-let inf = [
-    { name: "Monte Falco", job: "Coding", time: "01:00-02:00", c: Math.floor(Math.random() * 100) },
-    { name: "Monte Falterona", job: "Read", time: "01:00-02:00",  c: Math.floor(Math.random() * 100) },
-    { name: "Poggio Scali", job: "ghh", time: "01:00-02:00", c: Math.floor(Math.random() * 100)},
-    { name: "Pratomagno", job: "aasdas", time: "01:00-02:00",  c: Math.floor(Math.random() * 100) },
-    { name: "Monte Amiata", job: "asdsad", time: "01:00-02:00",  c: Math.floor(Math.random() * 100 ) }
-];
 
 function tableCreate(id, info) {
     const divShowData = document.getElementById(id);
@@ -138,12 +131,10 @@ function loadPrivateArea(){
                 console.log(data)
 
                 var user = document.getElementById("userName");
-                var text = document.createTextNode("Hell Engineer, " + data["name"]);
+                var text = document.createTextNode("Hello Engineer, " + data["name"]);
                 user.appendChild(text);
             })
-
-            
-        }); 
+    }); 
 
     fetch("http://localhost:8080/user/getEmployees",{
         method: 'POST',
@@ -163,15 +154,29 @@ function loadPrivateArea(){
             console.log(data)
             var table = document.getElementById("tableSpot");
             table.appendChild(tableGen(data))
-        })
-
-        
+        })   
     });
 
-   
-
-    
-
+    fetch("http://localhost:8080/shift/getShifts",{
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: JSON.stringify(data) // body data type must match "Content-Type" header
+    }).then((response) => {
+        // http status
+        if(!response.ok){
+            window.alert("Error");
+            logout();
+            return;
+        }
+        response.json().then((data) => {
+            console.log(data)
+            var table = document.getElementById("shifts");
+            table.appendChild(tableGen(data))
+        })   
+    });
 }
 
 
@@ -198,7 +203,6 @@ function loadEmployees(){
             return;
         }
         response.json().then((data) => {
-            console.log(data)
             let json = data;
             for(var x in json){
                 delete (json[x]["salary"])
@@ -206,9 +210,7 @@ function loadEmployees(){
                 delete (json[x]["role"])
                 delete (json[x]["shiftsIDs"])
                 delete (json[x]["absentDays"])
-                console.log(json[x])
             }
-            console.log(json)
             html = "";
             for(var key in json) {
                 html += "<option value=" +json[key]["id"]  + ">" + json[key]["id"] + " - " + json[key]["name"] + "</option>"
@@ -218,12 +220,54 @@ function loadEmployees(){
             //table.appendChild(tableGen(data))
 
         })
-
-        
     });
 }
+
+function loadShifts(){
+    data = {token: getCookie("token")}
+
+    fetch("http://localhost:8080/shift/getShifts",{
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: JSON.stringify(data) // body data type must match "Content-Type" header
+    }).then((response) => {
+        // http status
+        if(!response.ok){
+            window.alert("Error");
+            logout();
+            return;
+        }
+        response.json().then((data) => {
+            console.log(data)
+            let json = data;
+            for(var x in json){
+                delete (json[x]["employeesIDs"])
+                delete (json[x]["starTime"])
+                delete (json[x]["endTime"])
+            }
+            html = "";
+            for(var key in json) {
+                html += "<option value=" +json[key]["id"]  + ">" + json[key]["id"] + "</option>"
+            }
+            document.getElementById("shiftDropTable").innerHTML = html;
+
+        })
+    });
+}
+
+function shiftPage(){
+    loadEmployees()
+    loadShifts()
+}
+
 function goChangeEmployee(){
     window.location.href='./employeeChange.html'
+}
+function goCreateShift(){
+    window.location.href='./employeeShift.html'
 }
 
 function employeeChange(){
@@ -244,35 +288,62 @@ function employeeChange(){
             return;
         }
 
-    });
-
-            
-    // send request
-    
+    });    
     window.location.href='./private.html' 
-
 }
+
+
+function addShift(){
+    data = {token : getCookie("token"), employeeId : document.getElementById("employeeDropTable").value,  shiftId : document.getElementById("shiftDropTable").value}
+    console.log(data)
+    fetch("http://localhost:8080/shift/addEmployee",{
+    method: 'PUT',
+    headers: {
+        'Content-Type': 'application/json'
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: JSON.stringify(data) // body data type must match "Content-Type" header
+    }).then((response) => {
+        // http status
+        if(!response.ok){
+            window.alert("Error");
+            logout();
+            return;
+        }
+
+    });
+    window.location.href='./private.html' 
+}
+
+
+function createShift(){
+
+    var date = document.getElementById("fdata").value.replace("-","/").replace("-","/") + " " + document.getElementById("fStartTime").value
+    console.log(date)
+    data = {token : getCookie("token"), start : date, duration : document.getElementById("fduration").value}
+    console.log(data)
+    fetch("http://localhost:8080/shift/create",{
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: JSON.stringify(data) // body data type must match "Content-Type" header
+    }).then((response) => {
+        // http status
+        if(!response.ok){
+            window.alert("Error");
+            logout();
+            return;
+        }
+
+    });
+    window.location.href='./private.html' 
+}
+
+
+
 
 function backPrivate(){
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    var username = urlParams.get("User")
-    var token = urlParams.get("token")
-    window.location.href='./private.html' + "?User=" + username + "&token="+token;
+    window.location.href='./private.html' 
 }
-
-function goCreateShift(){
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-
-    
-
-
-    var username = urlParams.get("User")
-    var token = urlParams.get("token")
-    window.location.href='./employeeShift.html'+ "?User=" + username + "&token="+token;
-}
-
-
-
-

@@ -13,19 +13,30 @@
     <div>
         <h1>Industry: StarDrive, BackOffice</h1>
         <h3>Employee shift</h3>
-        <body onload="loadEmployee()"></body>
+        <body onload="shiftPage()"></body>
 
-        <select name="Emplyee" id="employeeDropTable"></select>
         <label for="fdata">Date:</label>
         <input type="date" id="fdata" name="fdata">
-        <label for="fduration">Duration:</label>
+        <label for="fStartTime">Start Time (HH:mm:ss) </label>
+        <input type="text" id="fStartTime" name="fStartTime">
+        <label for="fduration">Duration (minutes)</label>
         <input type="text" id="fduration" name="fduration">
-        <label >hours</label><br><br>
         
+        <br><br>
 
-        <button onClick ="createEmployeeShift()">Create</button>
+        <button onClick ="createShift()">Create</button>
+        <br><br>
+        <select name="Employee" id="employeeDropTable"></select>
+        <label for="shiftDropTable">Shift:</label>
+        <select name="Shifts" id="shiftDropTable"></select>
+
+        <br><br>
         
+       
+        <button onClick ="addShift()">Add</button>
+        <br><br><br>
         <button onClick="backPrivate()">Back</button>
+        
         <button onClick="logout()">Logout</button>
     </div>
     <script src="js/back.js"></script>
