@@ -1,7 +1,10 @@
 network:
   ethernets:
     enp0s3:
-      dhcp4: true
+      addresses:
+        - 10.0.4.254/24
+      nameservers:
+        addresses: [8.8.8.8, 8.8.4.4]
     enp0s8:
       addresses:
         - 10.0.1.254/24
