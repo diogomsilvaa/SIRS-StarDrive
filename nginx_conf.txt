@@ -33,8 +33,8 @@ http {
     #gzip  on;
 
     server {
-        listen       8082 ssl;
-	    listen [::]:8082 ssl;
+        listen       8080 ssl;
+	    listen [::]:8080 ssl;
         
 
 	    ssl_certificate    	/usr/local/etc/nginx/host.crt;
@@ -49,25 +49,6 @@ http {
         location / {
            root   html;
            index  index.html index.htm;
-        }
-    }
-    server {
-        listen       8083 ssl;
-        listen [::]:8083 ssl;
-        
-    
-        ssl_certificate         /usr/local/etc/nginx/host.crt;
-        ssl_certificate_key     /usr/local/etc/nginx/host.key;
-        
-        root /var/www/back/html;   
-            
-        index index.html;
-        server_name _;
-        
-         
-        location / {
-            root   html;
-            index  /back/index.html index.htm;
         }
     }
 
