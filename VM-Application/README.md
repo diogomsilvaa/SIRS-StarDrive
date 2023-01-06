@@ -4,7 +4,7 @@
 
 ## Configure
 In ORACLE go to setting->network and then:
-1. In adapter 1 make sure it´s attached to internal network with the name sw-2 and generate new MAC address
+1. In adapter 1 make sure it´s attached to internal network with the name sw-2, generate new MAC address and set promiscuous mode to allow all
 
 Copy 01-network-manager-all.yaml to /etc/netplan/00-installer-config.yaml
 
@@ -22,7 +22,7 @@ sudo netplan apply
 
 Run this command to set the router as the default gateway
 ```
-sudo ip route add default via 192.168.1.254
+sudo ip route add default via 192.168.0.254
 ```
 
 ## Procedure

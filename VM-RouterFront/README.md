@@ -6,9 +6,9 @@
 Create a machine with ubuntu server.
 
 In ORACLE go to setting->network and then:
-1. In adapter 1 make sure it´s attached to NAT and generate new MAC address
-2. In adapter 2 make sure it´s attached to internal network with the name sw-1 and generate new MAC address
-3. In adapter 3 make sure it´s attached to internal network with the name sw-2 and generate new MAC address
+1. In adapter 1 make sure it´s attached to host-only addapter and generate new MAC address
+2. In adapter 2 make sure it´s attached to internal network with the name front, generate new MAC address and set promiscuous mode to allow all
+3. In adapter 3 make sure it´s attached to internal network with the name auth, generate new MAC address and set promiscuous mode to allow all
 
 Copy the file 01-network-manager-all.yaml to /etc/netplan/00-installer-config.yaml
 
@@ -31,6 +31,10 @@ Copy the file before.rules to /etc/ufw/before.rules
 Run to enable ufw
 ```
 sudo ufw enable
+```
+Run this command to set the FrontOffice as the default gateway
+```
+sudo ip route add default via 10.0.1.2
 ```
 
 Run the following command to see the default rules of ufw
