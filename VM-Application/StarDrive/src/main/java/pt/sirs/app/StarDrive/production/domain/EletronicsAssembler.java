@@ -19,8 +19,7 @@ public class EletronicsAssembler extends Assembler{
     }
 
     public boolean testVoltage() {
-        float voltage = getRandom(60, 120);
-        if(voltage < 60.01 || voltage > 19.99){
+        if(getVoltage() > 59 || getVoltage() < 21){
             setVoltageAlert(true);
             info("Voltage problem in line " + getLineId());
             return false;
