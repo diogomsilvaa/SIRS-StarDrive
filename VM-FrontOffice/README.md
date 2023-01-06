@@ -2,6 +2,18 @@
 **OS:** Ubuntu Server
 **Description:**
 
+## Procedure
+Run this commands to install the Nginx
+```
+sudo apt update
+sudo apt install nginx
+```
+
+Copy our www folder  to `/var/`
+
+Copy the virtual host to `/etc/nginx/sites-enabled/`
+
+
 ## Configure
 In ORACLE go to setting->network and then:
 1. In adapter 1 make sure it´s attached to internal network with the name sw-1 and generate new MAC address and set to allow all on promiscuous mode
@@ -57,14 +69,3 @@ If routed is denied run
 ```
 sudo ufw default allow FORWARD
 ```
-
-## Procedure
-Run this commands to install the Nginx
-```
-sudo apt update
-sudo apt install nginx
-```
-
-Copy the HTML pages to `/var/www/html/`
-
-Copy the virtual host to `/etc/nginx/sites-enabled/`

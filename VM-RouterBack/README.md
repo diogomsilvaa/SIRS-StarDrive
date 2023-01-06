@@ -1,6 +1,8 @@
 **Machine:** RouterBack
 **OS:** Debian
-**Description:** To initialize this router:
+**Description:** 
+
+To initialize this router:
 Create a machine with ubuntu server.
 
 In ORACLE go to setting->network and then:
