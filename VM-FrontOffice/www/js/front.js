@@ -1,3 +1,5 @@
+address = "http://localhost:8081"
+
 function tableCreate(id, info) {
     const divShowData = document.getElementById(id);
     divShowData.innerHTML = "";
@@ -49,7 +51,7 @@ function login(){
 
         data = {id: login, pass: pass}
 
-        fetch("http://localhost:8081/auth",{
+        fetch(address + "/auth",{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -66,7 +68,7 @@ function login(){
             response.json().then((data) => {
                 token = data['content']
                 
-                fetch("http://localhost:8080/user/loginFront",{
+                fetch(address + "/user/loginFront",{
                     method: 'Post',
                     headers: {
                         'Content-Type': 'application/json'
@@ -108,7 +110,7 @@ function loadPrivateArea(){
 
     data = {token: getCookie("token")}
 
-    fetch("http://localhost:8080/user/getUser",{
+    fetch(address + "/user/getUser",{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -178,7 +180,7 @@ function loadPrivateArea(){
 function refreshTable(){
     
 
-    fetch("http://localhost:8080/shift/get",{
+    fetch(address + "/shift/get",{
             method: 'GET',
         }).then((response) => {
             // http status
@@ -204,7 +206,7 @@ function logout(){
 
 function asseblyLinesTable(){
     
-    fetch("http://localhost:8080/production/getLines",{
+    fetch(address + "/production/getLines",{
             method: 'GET',
         }).then((response) => {
             // http status

@@ -1,3 +1,4 @@
+address = "http://localhost:8081"
 
 function tableCreate(id, info) {
     const divShowData = document.getElementById(id);
@@ -61,7 +62,7 @@ function login(){
 
         data = {id: login, pass: pass}
 
-        fetch("http://localhost:8081/auth",{
+        fetch(address + "/auth",{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -78,7 +79,7 @@ function login(){
             response.json().then((data) => {
                 token = data['content']
                 
-                fetch("http://localhost:8080/user/loginBack",{
+                fetch(address + "/user/loginBack",{
                     method: 'Post',
                     headers: {
                         'Content-Type': 'application/json'
@@ -113,7 +114,7 @@ let employees = [
 function loadPrivateArea(){
     data = {token: getCookie("token")}
 
-    fetch("http://localhost:8080/user/getUser",{
+    fetch(address + "/user/getUser",{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -136,7 +137,7 @@ function loadPrivateArea(){
             })
     }); 
 
-    fetch("http://localhost:8080/user/getEmployees",{
+    fetch(address + "/user/getEmployees",{
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -157,7 +158,7 @@ function loadPrivateArea(){
         })   
     });
 
-    fetch("http://localhost:8080/shift/getShifts",{
+    fetch(address + "/shift/getShifts",{
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -188,7 +189,7 @@ function logout(){
 function loadEmployees(){
     data = {token: getCookie("token")}
 
-    fetch("http://localhost:8080/user/getEmployees",{
+    fetch(address + "/user/getEmployees",{
     method: 'POST',
     headers: {
         'Content-Type': 'application/json'
@@ -226,7 +227,7 @@ function loadEmployees(){
 function loadShifts(){
     data = {token: getCookie("token")}
 
-    fetch("http://localhost:8080/shift/getShifts",{
+    fetch(address + "/shift/getShifts",{
     method: 'POST',
     headers: {
         'Content-Type': 'application/json'
@@ -281,7 +282,7 @@ function asseblyLinesPage(){
 
 function asseblyLinesTable(){
     data = {token : getCookie("token")}
-    fetch("http://localhost:8080/production/getAllLines",{
+    fetch(address + "/production/getAllLines",{
     method: 'POST',
     headers: {
         'Content-Type': 'application/json'
@@ -315,7 +316,7 @@ function asseblyLinesTable(){
 
 function addAssembler(){
     data = {token : getCookie("token"),lineId: document.getElementById("lineToAddDropTable").value, assemblerId : document.getElementById("assemblerToAddDropTable").value}
-    fetch("http://localhost:8080/production/addAssembler",{
+    fetch(address + "/production/addAssembler",{
     method: 'POST',
     headers: {
         'Content-Type': 'application/json'
@@ -335,7 +336,7 @@ function addAssembler(){
 
 function startAssemblyLine(){
     data = {token : getCookie("token"),lineId: document.getElementById("assemblyLine").value}
-    fetch("http://localhost:8080/production/startLine",{
+    fetch(address + "/production/startLine",{
     method: 'POST',
     headers: {
         'Content-Type': 'application/json'
@@ -355,7 +356,7 @@ function startAssemblyLine(){
 
 function assemblersTable(){
     data = {token : getCookie("token")}
-    fetch("http://localhost:8080/production/getAssemblers",{
+    fetch(address + "/production/getAssemblers",{
     method: 'POST',
     headers: {
         'Content-Type': 'application/json'
@@ -397,7 +398,7 @@ function assemblersType(){
 
 function createAssembler(){
     data = {token : getCookie("token"), type : document.getElementById("assemblerTypeDropTable").value}
-    fetch("http://localhost:8080/production/createAssembler",{
+    fetch(address + "/production/createAssembler",{
     method: 'POST',
     headers: {
         'Content-Type': 'application/json'
@@ -417,7 +418,7 @@ function createAssembler(){
 
 function createLine(){
     data = {token : getCookie("token")}
-    fetch("http://localhost:8080/production/createLine",{
+    fetch(address + "/production/createLine",{
     method: 'POST',
     headers: {
         'Content-Type': 'application/json'
@@ -438,7 +439,7 @@ function createLine(){
 function employeeChange(){
     data = {token : getCookie("token"), id : document.getElementById("employeeDropTable").value, salary : document.getElementById("fsalary").value}
 
-    fetch("http://localhost:8080/user/changeSalary",{
+    fetch(address + "/user/changeSalary",{
     method: 'POST',
     headers: {
         'Content-Type': 'application/json'
@@ -461,7 +462,7 @@ function employeeChange(){
 function addShift(){
     data = {token : getCookie("token"), employeeId : document.getElementById("employeeDropTable").value,  shiftId : document.getElementById("shiftDropTable").value}
     console.log(data)
-    fetch("http://localhost:8080/shift/addEmployee",{
+    fetch(address + "/shift/addEmployee",{
     method: 'PUT',
     headers: {
         'Content-Type': 'application/json'
@@ -487,7 +488,7 @@ function createShift(){
     console.log(date)
     data = {token : getCookie("token"), start : date, duration : document.getElementById("fduration").value}
     console.log(data)
-    fetch("http://localhost:8080/shift/create",{
+    fetch(address + "/shift/create",{
     method: 'POST',
     headers: {
         'Content-Type': 'application/json'
