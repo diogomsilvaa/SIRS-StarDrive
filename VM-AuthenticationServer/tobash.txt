@@ -1,0 +1,8 @@
+
+export JAVA_HOME=/lib/jvm/java-17-openjdk-amd64
+export PATH=$JAVA_HOME/bin:$PATH
+
+export M2_HOME=/opt/apache-maven-3.8.7
+export PATH=$M2_HOME/bin:$PATH
+
+export BACK_SERVER_KEY='r3bPGiYQ+ZohWAty0Og2+vZZzMsNHsC8sWb9Gtf5xPQ='

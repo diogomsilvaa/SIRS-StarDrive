@@ -2,6 +2,8 @@ package pt.sirs.app.StarDrive.user;
 
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -53,5 +55,15 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public List<User> getUsers(){
+        return userRepository.findAll();
+    }
+
+    public void changeSalary(String employeeId, double salary){
+        User user = userRepository.findById(employeeId).get();
+
+        user.setSalary(salary);
+        userRepository.save(user);
+    }
 
 }

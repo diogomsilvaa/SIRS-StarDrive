@@ -12,19 +12,22 @@
 <body>
     <div>
         <h1>Industry: StarDrive, BackOffice</h1>
-        <h3>Employee Edit</h3>
-
-        <body onload="loadEmployees()"></body>
-        <label  for="employeeDropTable">Employee:</label>
+        <h3>Assembly Lines</h3>
+        <body onload="shiftPage()"></body>
+        <p id = "lines"></p>
+        <button onClick ="createShift()">Create</button>
+        <br><br>
         <select name="Employee" id="employeeDropTable"></select>
-        <label for="fsalary">Salary:</label>
-        <input type="text" id="fsalary" name="fsalary">
+        <label for="shiftDropTable">Shift:</label>
+        <select name="Shifts" id="shiftDropTable"></select>
+
         <br><br>
         
-
-        <button onClick ="employeeChange()">Save</button>
-        
+       
+        <button onClick ="addShift()">Add</button>
+        <br><br><br>
         <button onClick="backPrivate()">Back</button>
+        
         <button onClick="logout()">Logout</button>
     </div>
     <script src="js/back.js"></script>

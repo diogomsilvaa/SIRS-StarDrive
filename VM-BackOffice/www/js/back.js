@@ -1,39 +1,3 @@
-// function clickMe() {
-//     var header = document.getElementById("title");
-//     header.innerHTML = "po crlh";
-// }
-
-// var button = document.getElementById("but");
-// button.addEventListener("click", clickMe);
-
-// fetch data from random api
-function fetchRandom() {
-    fetch("https://randomuser.me/api/")
-        .then(response => response.json())
-        .then(data => {
-            var user = data.results[0];
-            var name = user.name.first + " " + user.name.last;
-            var email = user.email;
-            var phone = user.phone;
-            var image = user.picture.large;
-
-            document.getElementById("name").innerHTML = name;
-            document.getElementById("email").innerHTML = email;
-            document.getElementById("phone").innerHTML = phone;
-            document.getElementById("image").src = image;
-        });
-    }
-
-
-    
-
-let inf = [
-    { name: "Monte Falco", job: "Coding", time: "01:00-02:00", c: Math.floor(Math.random() * 100) },
-    { name: "Monte Falterona", job: "Read", time: "01:00-02:00",  c: Math.floor(Math.random() * 100) },
-    { name: "Poggio Scali", job: "ghh", time: "01:00-02:00", c: Math.floor(Math.random() * 100)},
-    { name: "Pratomagno", job: "aasdas", time: "01:00-02:00",  c: Math.floor(Math.random() * 100) },
-    { name: "Monte Amiata", job: "asdsad", time: "01:00-02:00",  c: Math.floor(Math.random() * 100 ) }
-];
 
 function tableCreate(id, info) {
     const divShowData = document.getElementById(id);
@@ -74,118 +38,315 @@ function tableGen(data){
     return table;
 }
 
+function getCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i < ca.length;i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    }
+    return null;
+}
 
 function login(){
          
     var login = prompt("Username");
-    var reponse = "admin";
 
     parBis();
 
-    function parBis(){
-        var token = "aaa"
+    async function parBis(){
+        var token = ""
         var pass = prompt("Password");
-        var password = "admin";
-        if(login === reponse && pass === password){
-            //login part
-            window.location.href = "./private.html" + "?User=" + login + "&token="+token // meter aqui o token
-        }
-        else{
-            window.alert("User or password incorrect");
-        }
+
+        data = {id: login, pass: pass}
+
+        fetch("http://localhost:8081/auth",{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data) // body data type must match "Content-Type" header
+        }).then((response) => {
+            // http status
+            if(!response.ok){
+                window.alert("Error");
+                window.location.href = "./index.html";
+                return;
+            }
+
+            response.json().then((data) => {
+                token = data['content']
+                
+                fetch("http://localhost:8080/user/loginBack",{
+                    method: 'Post',
+                    headers: {
+                        'Content-Type': 'application/json'
+                        // 'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: JSON.stringify({ token: token, id: login}) // body data type must match "Content-Type" header
+                }).then((response) => {
+                    // http status
+                    if(!response.ok){
+                        window.alert("Error");
+                        window.location.href = "./index.html";
+                        return;
+                    }
+                        
+                    window.location.href = "./private.html"  
+                    document.cookie = "token="+token+"; path=/"
+                    
+                });
+            })
+
+        })   
     }  
 }
+
 
 let employees = [
     { Name: "Carlos", Salary: "1231231"},
     { Name: "Diogo", Salary: "1231231"},
     { Name: "Miguel", Salary: "1231231"}
 ];
+
 function loadPrivateArea(){
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    var username = urlParams.get("User")
-    var user = document.getElementById("userName");
-    var text = document.createTextNode("Hello, " + username);
+    data = {token: getCookie("token")}
 
-    user.appendChild(text);
-    var table = document.getElementById("tableSpot");
-    table.appendChild(tableGen(employees))
+    fetch("http://localhost:8080/user/getUser",{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: JSON.stringify(data) // body data type must match "Content-Type" header
+        }).then((response) => {
+            // http status
+            if(!response.ok){
+                window.alert("Error");
+                logout();
+                return;
+            }
+            response.json().then((data) => {
+                console.log(data)
 
+                var user = document.getElementById("userName");
+                var text = document.createTextNode("Hello Engineer, " + data["name"]);
+                user.appendChild(text);
+            })
+    }); 
+
+    fetch("http://localhost:8080/user/getEmployees",{
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: JSON.stringify(data) // body data type must match "Content-Type" header
+    }).then((response) => {
+        // http status
+        if(!response.ok){
+            window.alert("Error");
+            logout();
+            return;
+        }
+        response.json().then((data) => {
+            console.log(data)
+            var table = document.getElementById("tableSpot");
+            table.appendChild(tableGen(data))
+        })   
+    });
+
+    fetch("http://localhost:8080/shift/getShifts",{
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: JSON.stringify(data) // body data type must match "Content-Type" header
+    }).then((response) => {
+        // http status
+        if(!response.ok){
+            window.alert("Error");
+            logout();
+            return;
+        }
+        response.json().then((data) => {
+            console.log(data)
+            var table = document.getElementById("shifts");
+            table.appendChild(tableGen(data))
+        })   
+    });
 }
 
 
-
-
-
 function logout(){
+    document.cookie = "token=; path=/"
     window.location.href='./index.html';
 }
 
 function loadEmployees(){
-    html = "";
-        obj = {
-            "1" : "Name",
-            "2": "Age",
-            "3" : "Gender"
+    data = {token: getCookie("token")}
+
+    fetch("http://localhost:8080/user/getEmployees",{
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: JSON.stringify(data) // body data type must match "Content-Type" header
+    }).then((response) => {
+        // http status
+        if(!response.ok){
+            window.alert("Error");
+            logout();
+            return;
         }
-        for(var key in obj) {
-            html += "<option value=" + key  + ">" +obj[key] + "</option>"
-        }
-        document.getElementById("employeeDropTable").innerHTML = html;
+        response.json().then((data) => {
+            let json = data;
+            for(var x in json){
+                delete (json[x]["salary"])
+                delete (json[x]["creationDate"])
+                delete (json[x]["role"])
+                delete (json[x]["shiftsIDs"])
+                delete (json[x]["absentDays"])
+            }
+            html = "";
+            for(var key in json) {
+                html += "<option value=" +json[key]["id"]  + ">" + json[key]["id"] + " - " + json[key]["name"] + "</option>"
+            }
+            
+            document.getElementById("employeeDropTable").innerHTML = html;
+            //table.appendChild(tableGen(data))
+
+        })
+    });
 }
 
-function backPrivate(){
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    var username = urlParams.get("User")
-    var token = urlParams.get("token")
-    window.location.href='./private.html' + "?User=" + username + "&token="+token;
+function loadShifts(){
+    data = {token: getCookie("token")}
+
+    fetch("http://localhost:8080/shift/getShifts",{
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: JSON.stringify(data) // body data type must match "Content-Type" header
+    }).then((response) => {
+        // http status
+        if(!response.ok){
+            window.alert("Error");
+            logout();
+            return;
+        }
+        response.json().then((data) => {
+            console.log(data)
+            let json = data;
+            for(var x in json){
+                delete (json[x]["employeesIDs"])
+                delete (json[x]["starTime"])
+                delete (json[x]["endTime"])
+            }
+            html = "";
+            for(var key in json) {
+                html += "<option value=" +json[key]["id"]  + ">" + json[key]["id"] + "</option>"
+            }
+            document.getElementById("shiftDropTable").innerHTML = html;
+
+        })
+    });
 }
 
-function goCreateShift(){
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-
-    
-
-
-    var username = urlParams.get("User")
-    var token = urlParams.get("token")
-    window.location.href='./employeeShift.html'+ "?User=" + username + "&token="+token;
+function shiftPage(){
+    loadEmployees()
+    loadShifts()
 }
 
 function goChangeEmployee(){
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    var username = urlParams.get("User")
-    var token = urlParams.get("token")
-    window.location.href='./employeeChange.html'+ "?User=" + username + "&token="+token;
+    window.location.href='./employeeChange.html'
+}
+function goCreateShift(){
+    window.location.href='./employeeShift.html'
+}
+function goAssemblyLines(){
+    window.location.href='./assemblyLines.html'
 }
 
-function createEmployeeShift(){
-    console.log(document.getElementById("employeeDropTable").value)
-    console.log(document.getElementById("fdata").value)
-    console.log(document.getElementById("fduration").value)
+function employeeChange(){
+    data = {token : getCookie("token"), id : document.getElementById("employeeDropTable").value, salary : document.getElementById("fsalary").value}
 
-    // send request
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    var username = urlParams.get("User")
-    var token = urlParams.get("token")
-    window.location.href='./private.html' + "?User=" + username + "&token="+token;
+    fetch("http://localhost:8080/user/changeSalary",{
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: JSON.stringify(data) // body data type must match "Content-Type" header
+    }).then((response) => {
+        // http status
+        if(!response.ok){
+            window.alert("Error");
+            //logout();
+            return;
+        }
 
+    });    
+    window.location.href='./private.html' 
 }
 
-function changeEmployee(){
-    console.log(document.getElementById("fid").value)
-    console.log(document.getElementById("fpass").value)
-    console.log(document.getElementById("fpass").value)
-    //send request
 
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    var username = urlParams.get("User")
-    var token = urlParams.get("token")
-    window.location.href='./private.html' + "?User=" + username + "&token="+token;
+function addShift(){
+    data = {token : getCookie("token"), employeeId : document.getElementById("employeeDropTable").value,  shiftId : document.getElementById("shiftDropTable").value}
+    console.log(data)
+    fetch("http://localhost:8080/shift/addEmployee",{
+    method: 'PUT',
+    headers: {
+        'Content-Type': 'application/json'
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: JSON.stringify(data) // body data type must match "Content-Type" header
+    }).then((response) => {
+        // http status
+        if(!response.ok){
+            window.alert("Error");
+            logout();
+            return;
+        }
+
+    });
+    window.location.href='./private.html' 
+}
+
+
+function createShift(){
+
+    var date = document.getElementById("fdata").value.replace("-","/").replace("-","/") + " " + document.getElementById("fStartTime").value
+    console.log(date)
+    data = {token : getCookie("token"), start : date, duration : document.getElementById("fduration").value}
+    console.log(data)
+    fetch("http://localhost:8080/shift/create",{
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: JSON.stringify(data) // body data type must match "Content-Type" header
+    }).then((response) => {
+        // http status
+        if(!response.ok){
+            window.alert("Error");
+            logout();
+            return;
+        }
+
+    });
+    window.location.href='./private.html' 
+}
+
+
+
+
+function backPrivate(){
+    window.location.href='./private.html' 
 }

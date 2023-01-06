@@ -17,8 +17,6 @@ public class AssemblyLine {
     private String startDate = null;
     private String endDate = null;
 
-    @Transient
-    private static int seqNum = 0;
 
     private ArrayList<String> assemblersIDs;
 
@@ -26,10 +24,9 @@ public class AssemblyLine {
     private ArrayList<Assembler> assemblers;
     
 
-    public AssemblyLine(){
+    public AssemblyLine(String id){
         assemblersIDs = new ArrayList<String>();
-        setId("L" + seqNum);
-        seqNum++;
+        setId(id);
     }
 
     public String getId() {
@@ -56,9 +53,6 @@ public class AssemblyLine {
     }
     public void setEndDate(String endDate) {
         this.endDate = endDate;
-    }
-    public int getSeqNum() {
-        return seqNum;
     }
     
     public void setOnProduction(boolean onProduction) {
