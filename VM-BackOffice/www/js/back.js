@@ -1,4 +1,5 @@
-address = "http://localhost:8081"
+address = "https://localhost:8080"
+auth = "https://localhost:8081"
 
 function tableCreate(id, info) {
     const divShowData = document.getElementById(id);
@@ -62,7 +63,7 @@ function login(){
 
         data = {id: login, pass: pass}
 
-        fetch(address + "/auth",{
+        fetch(auth + "/auth",{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
